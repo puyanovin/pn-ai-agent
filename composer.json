@@ -1,0 +1,20 @@
+{
+    "name": "pn-suite/pn-ai-agent",
+    "description": "Open-source AI Agent platform for WordPress.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "PN Suite",
+            "homepage": "https://plugins.puyanovin.ir"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "PNAIAgent\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {}
+}
+
