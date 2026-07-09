@@ -1,0 +1,172 @@
+/* ============================================
+   استایل صفحه تنظیمات PN AIBot
+   ============================================ */
+
+/* ---------- بخش تست (Test Section) ---------- */
+.pn-test-section {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 8px;
+    margin: 20px 0;
+    overflow: hidden;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.pn-test-header {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e2e4e7;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pn-test-icon { font-size: 24px; }
+.pn-test-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    flex: 1;
+}
+.pn-test-status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+.status-ok { background: #d1e7dd; color: #0f5132; }
+.status-warning { background: #fff3cd; color: #856404; }
+
+.pn-test-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+.pn-test-card {
+    background: #fff;
+    border: 1px solid #e2e4e7;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.pn-test-card-title {
+    background: #f8f9fa;
+    padding: 10px 15px;
+    font-weight: 600;
+    border-bottom: 1px solid #e2e4e7;
+}
+.pn-test-card-content { padding: 15px; }
+
+.pn-test-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+}
+.pn-test-label { font-weight: 500; }
+.pn-test-badge {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+.pn-test-badge.success { background: #d1e7dd; color: #0f5132; }
+.pn-test-badge.error { background: #f8d7da; color: #721c24; }
+
+.pn-test-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.pn-test-table th,
+.pn-test-table td {
+    padding: 6px 8px;
+    text-align: center;
+    border-bottom: 1px solid #e2e4e7;
+}
+.pn-test-table th { background: #f8f9fa; font-weight: 600; }
+
+.pn-test-empty {
+    text-align: center;
+    padding: 20px;
+    color: #6c757d;
+}
+.pn-test-empty.success {
+    color: #0f5132;
+    background: #d1e7dd;
+    border-radius: 4px;
+}
+.pn-test-list {
+    margin: 0;
+    padding-left: 20px;
+}
+.pn-test-list li {
+    margin: 5px 0;
+    color: #856404;
+}
+
+/* ---------- نقشه محصولات (Mapping) ---------- */
+.map-row {
+    margin-bottom: 12px;
+    padding: 10px;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.map-row .product-id-input,
+.map-row .level-id-input {
+    width: 180px;
+    padding: 6px 10px;
+}
+.map-row .arrow { font-size: 18px; color: #666; }
+.remove-row { margin-left: auto; }
+
+/* ---------- تنظیمات ظاهری (Appearance) ---------- */
+.pn-appearance-settings .settings-section {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.pn-appearance-settings .settings-section h3 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+.pn-appearance-settings .notice-info {
+    background: #f0f8ff;
+    border-left-color: #00a0d2;
+}
+.pn-appearance-settings code {
+    background: #f1f1f1;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+.separator-preview {
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+.preview-sep {
+    display: inline-block;
+    margin: 0 8px;
+    color: #007cba;
+    font-weight: bold;
+}
+#icon-instructions {
+    margin-top: 15px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-left: 4px solid #007cba;
+}
+#icon-instructions ol {
+    margin: 5px 0 0 20px;
+}
+#icon-instructions li { margin: 5px 0; }
+#icon-example code {
+    display: inline-block;
+    margin: 3px 0;
+}
