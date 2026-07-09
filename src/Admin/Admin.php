@@ -14,8 +14,6 @@ final class Admin
     {
         (new Menu())->register();
         (new Assets())->register();
-
-        // بعداً
-        // (new Settings())->register();
+        (new Settings())->register();
     }
 }
