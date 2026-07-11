@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name:       PN AI Agent
- * Plugin URI:        https://plugins.puyanovin.ir//pn-ai-agent
- * Description:       Open-source AI Agent platform for WordPress.
+ * Plugin URI:        https://plugins.puyanovin.ir/pn-ai-agent
+ * Description:       Open-source AI Assistant for WordPress with support for OpenAI, Gemini, Claude, DeepSeek, Qwen and OpenAI-compatible APIs.
  * Version:           0.1.0
  * Requires at least: 6.5
  * Requires PHP:      8.1
@@ -30,16 +30,33 @@ if (!class_exists(\PNAIAgent\Core\Application::class)) {
 use PNAIAgent\Core\Application;
 use PNAIAgent\Core\Activator;
 use PNAIAgent\Core\Deactivator;
+use PNAIAgent\Frontend\ChatShortcode;
+use PNAIAgent\Frontend\ChatWidget;
 
-load_plugin_textdomain(
-    'pn-ai-agent',
-    false,
-    dirname(plugin_basename(PN_AI_AGENT_FILE)) . '/languages'
-);
+add_action('init', function () {
+    (new ChatShortcode())->register();
+});
+
+add_action('widgets_init', function () {
+    register_widget(ChatWidget::class);
+});
+
+
+add_action('init', function () {
+
+    load_plugin_textdomain(
+        'pn-ai-agent',
+        false,
+        dirname(plugin_basename(PN_AI_AGENT_FILE)) . '/languages'
+    );
+
+});
 
 register_activation_hook(
     __FILE__,
-    [Activator::class, 'activate']
+    function () {
+        \PNAIAgent\Database\Installer::install();
+    }
 );
 
 register_deactivation_hook(

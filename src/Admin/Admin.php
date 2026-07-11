@@ -15,5 +15,6 @@ final class Admin
         (new Menu())->register();
         (new Assets())->register();
         (new Settings())->register();
+        (new Ajax())->register();
     }
 }

@@ -1,9 +1,21 @@
 # Changelog
 
-## 0.1.0
+## 1.0.0
 
-- Initial project structure
-- Composer support
-- PSR-4 autoload
-- Admin bootstrap
-- PN Suite menu
+### Added
+
+- Multiple AI Providers
+- OpenAI Support
+- Gemini Support
+- Claude Support
+- DeepSeek Support
+- Qwen Support
+- Chat Interface
+- Frontend Chat
+- Widget
+- Shortcode
+- Gutenberg Block
+- Logs
+- Provider Test
+- Internationalization
+- RTL Support

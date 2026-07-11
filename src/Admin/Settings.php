@@ -27,32 +27,43 @@ final class Settings
             ]
         );
 
-        register_setting(
-            'pn_ai_agent_general',
-            'pn_ai_api_key',
-            [
-                'type' => 'string',
-                'sanitize_callback' => 'sanitize_text_field',
-            ]
-        );
+        $providers = [
+            'openai',
+            'gemini',
+            'anthropic',
+            'openrouter',
+            'ollama',
+        ];
 
-        register_setting(
-            'pn_ai_agent_general',
-            'pn_ai_api_url',
-            [
-                'type' => 'string',
-                'sanitize_callback' => 'esc_url_raw',
-            ]
-        );
+        foreach ($providers as $provider) {
 
-        register_setting(
-            'pn_ai_agent_general',
-            'pn_ai_model',
-            [
-                'type' => 'string',
-                'sanitize_callback' => 'sanitize_text_field',
-                'default' => 'gpt-4.1-mini',
-            ]
-        );
+            register_setting(
+                'pn_ai_agent_general',
+                "pn_ai_{$provider}_api_key",
+                [
+                    'type' => 'string',
+                    'sanitize_callback' => 'sanitize_text_field',
+                ]
+            );
+
+            register_setting(
+                'pn_ai_agent_general',
+                "pn_ai_{$provider}_api_url",
+                [
+                    'type' => 'string',
+                    'sanitize_callback' => 'esc_url_raw',
+                ]
+            );
+
+            register_setting(
+                'pn_ai_agent_general',
+                "pn_ai_{$provider}_model",
+                [
+                    'type' => 'string',
+                    'sanitize_callback' => 'sanitize_text_field',
+                ]
+            );
+        }
     }
+
 }

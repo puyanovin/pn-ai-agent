@@ -3,112 +3,99 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+
+$currentProvider = get_option('pn_ai_provider', 'openai');
+
+$apiUrl = get_option(
+    "pn_ai_{$currentProvider}_api_url",
+    ''
+);
+
+$apiKey = get_option(
+    "pn_ai_{$currentProvider}_api_key",
+    ''
+);
+
+$model = get_option(
+    "pn_ai_{$currentProvider}_model",
+    ''
+);
+
+$providers = [
+    'openai'     => 'OpenAI',
+    'gemini'     => 'Google Gemini',
+    'anthropic'  => 'Anthropic',
+    'openrouter' => 'OpenRouter',
+    'ollama'     => 'Ollama',
+];
+
 ?>
 
 <div class="wrap">
+
     <h1><?php esc_html_e('Providers', 'pn-ai-agent'); ?></h1>
 
-    <form method="post" action="options.php">
+    <table class="widefat striped">
 
-        <?php
-        settings_fields('pn_ai_agent_general');
-        do_settings_sections('pn_ai_agent_general');
-        ?>
+        <thead>
+            <tr>
+                <th><?php esc_html_e('Provider', 'pn-ai-agent'); ?></th>
+                <th><?php esc_html_e('Status', 'pn-ai-agent'); ?></th>
+                <th width="180"><?php esc_html_e('Action', 'pn-ai-agent'); ?></th>
+                <th><?php esc_html_e('Result', 'pn-ai-agent'); ?></th>
+            </tr>
+        </thead>
 
-        <table class="form-table">
+        <tbody>
+
+        <?php foreach ($providers as $id => $name) : ?>
 
             <tr>
-                <th>
-                    <label for="pn_ai_provider">
-                        <?php esc_html_e('Provider', 'pn-ai-agent'); ?>
-                    </label>
-                </th>
-                <td>
-                    <select id="pn_ai_provider" name="pn_ai_provider">
 
-                        <option value="openai"
-                            <?php selected(get_option('pn_ai_provider', 'openai'), 'openai'); ?>>
-                            OpenAI
-                        </option>
-
-                        <option value="gemini"
-                            <?php selected(get_option('pn_ai_provider'), 'gemini'); ?>>
-                            Gemini
-                        </option>
-
-                        <option value="anthropic"
-                            <?php selected(get_option('pn_ai_provider'), 'anthropic'); ?>>
-                            Anthropic (Claude)
-                        </option>
-
-                        <option value="ollama"
-                            <?php selected(get_option('pn_ai_provider'), 'ollama'); ?>>
-                            Ollama
-                        </option>
-
-                        <option value="openrouter"
-                            <?php selected(get_option('pn_ai_provider'), 'openrouter'); ?>>
-                            OpenRouter
-                        </option>
-
-                    </select>
-                </td>
-            </tr>
-
-            <tr>
-                <th>
-                    <label for="pn_ai_api_key">
-                        <?php esc_html_e('API Key', 'pn-ai-agent'); ?>
-                    </label>
-                </th>
+                <td><?php echo esc_html($name); ?></td>
 
                 <td>
-                    <input
-                        class="regular-text"
-                        type="password"
-                        id="pn_ai_api_key"
-                        name="pn_ai_api_key"
-                        value="<?php echo esc_attr(get_option('pn_ai_api_key')); ?>">
-                </td>
-            </tr>
 
-            <tr>
-                <th>
-                    <label for="pn_ai_api_url">
-                        <?php esc_html_e('API URL', 'pn-ai-agent'); ?>
-                    </label>
-                </th>
+                    <?php if ($currentProvider === $id) : ?>
+
+                        <span style="color:green;font-weight:bold;">
+                            <?php esc_html_e('Active', 'pn-ai-agent'); ?>
+                        </span>
+
+                    <?php else : ?>
+
+                        <span style="color:#777;">
+                            I<?php esc_html_e('Inactive', 'pn-ai-agent'); ?>
+                        </span>
+
+                    <?php endif; ?>
+
+                </td>
 
                 <td>
-                    <input
-                        class="regular-text"
-                        type="url"
-                        id="pn_ai_api_url"
-                        name="pn_ai_api_url"
-                        value="<?php echo esc_attr(get_option('pn_ai_api_url')); ?>">
+
+                    <button
+                        class="button button-primary pn-test-provider"
+                        data-provider="<?php echo esc_attr($id); ?>">
+                        <?php esc_html_e('Test Connection', 'pn-ai-agent'); ?>
+                    </button>
+
                 </td>
-            </tr>
-
-            <tr>
-                <th>
-                    <label for="pn_ai_model">
-                        <?php esc_html_e('Model', 'pn-ai-agent'); ?>
-                    </label>
-                </th>
-
                 <td>
-                    <input
-                        class="regular-text"
-                        type="text"
-                        id="pn_ai_model"
-                        name="pn_ai_model"
-                        value="<?php echo esc_attr(get_option('pn_ai_model')); ?>">
+
+                <span
+                    id="pn-result-<?php echo esc_attr($id); ?>">
+                -
+                </span>
+
                 </td>
+
             </tr>
 
-        </table>
-        <?php submit_button(); ?>
+        <?php endforeach; ?>
 
-    </form>
+        </tbody>
+
+    </table>
 
 </div>
