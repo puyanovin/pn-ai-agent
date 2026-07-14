@@ -13,23 +13,35 @@ if [ -z "$VERSION" ]; then
 fi
 
 RELEASE_DIR="release"
+BUILD_DIR="${RELEASE_DIR}/${PLUGIN}"
+
 ZIP_NAME="${PLUGIN}-${VERSION}.zip"
 
-echo "Building release:"
-echo "$ZIP_NAME"
+echo "Building ${ZIP_NAME}"
 
-mkdir -p "$RELEASE_DIR"
+rm -rf "$BUILD_DIR"
+mkdir -p "$BUILD_DIR"
 
+# Core files
+cp pn-ai-agent.php "$BUILD_DIR/"
+cp uninstall.php "$BUILD_DIR/"
+cp readme.txt "$BUILD_DIR/"
+
+# Folders
+cp -r assets "$BUILD_DIR/"
+cp -r languages "$BUILD_DIR/"
+cp -r src "$BUILD_DIR/"
+cp -r vendor "$BUILD_DIR/"
+
+# Remove previous zip
 rm -f "${RELEASE_DIR}/${ZIP_NAME}"
 
-zip -r "${RELEASE_DIR}/${ZIP_NAME}" . \
-    -x ".git/*" \
-    -x ".github/*" \
-    -x "release/*" \
-    -x "*.zip" \
-    -x "node_modules/*" \
-    -x "build-release.sh"
+cd "$RELEASE_DIR"
+
+zip -r "$ZIP_NAME" "$PLUGIN"
+
+cd ..
 
 echo ""
-echo "Release created successfully:"
+echo "Release created:"
 echo "${RELEASE_DIR}/${ZIP_NAME}"
