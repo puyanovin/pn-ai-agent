@@ -1,11 +1,10 @@
 === PN AI Agent ===
-
-Contributors: puyanovin
-Tags: ai, chatbot, openai, gemini, ollama, assistant
+Contributors:
+Tags: ai, chatbot, openai, gemini, ollama
 Requires at least: 6.5
-Tested up to: 6.8
+Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,40 +14,42 @@ Build AI-powered assistants for WordPress using OpenAI, Google Gemini or local O
 
 PN AI Agent is a modern, lightweight, and open-source AI assistant plugin for WordPress.
 
-Create intelligent AI-powered chat experiences on your website using your preferred AI provider. The plugin offers a clean administration interface, provider management, model selection, and an easy-to-use chat widget.
+Create intelligent AI-powered chat experiences on your website using your preferred AI provider. The plugin provides a clean administration interface, provider management, model selection, and an easy-to-use AI chat system.
 
 The free edition currently supports:
 
-* OpenAI
-* Google Gemini
-* Ollama (Local AI)
+OpenAI
+Google Gemini
+Ollama (Local AI)
 
 Features:
 
-* Multiple AI providers
-* Provider connection test
-* Automatic model loading
-* AI chat interface
-* Frontend chatbot
-* Chat shortcode
-* Gutenberg block
-* Fast and lightweight
-* Fully translatable
-* RTL support
-* WordPress coding standards
-* PHP 8.1+
-* Open-source
+Multiple AI providers
+Provider connection testing
+Automatic model loading
+AI chat interface
+Frontend chatbot
+Chat shortcode
+Gutenberg block
+AI chat widget
+Clean administration dashboard
+Fast and lightweight architecture
+Fully translatable
+RTL support
+WordPress coding standards compatible
+PHP 8.1+ support
+Open-source GPL licensed
 
 == Installation ==
 
-1. Upload the plugin to the `/wp-content/plugins/` directory.
-2. Activate the plugin through the **Plugins** menu in WordPress.
-3. Open **PN AI Agent** from the WordPress admin menu.
-4. Select your preferred AI provider.
-5. Enter your API credentials.
-6. Load available models.
-7. Save your settings.
-8. Add the chatbot using the shortcode, widget, or Gutenberg block.
+Upload the plugin to the /wp-content/plugins/ directory.
+Activate the plugin through the Plugins menu in WordPress.
+Open PN AI Agent from the WordPress admin menu.
+Select your preferred AI provider.
+Enter your API credentials.
+Load available models.
+Save your settings.
+Add the chatbot using the shortcode, widget, or Gutenberg block.
 
 == Frequently Asked Questions ==
 
@@ -56,23 +57,23 @@ Features:
 
 The free version supports:
 
-* OpenAI
-* Google Gemini
-* Ollama (Local AI)
+OpenAI
+Google Gemini
+Ollama (Local AI)
 
-Additional providers will be available in future releases.
+More providers may be added in future releases.
 
 = Does it work without OpenAI? =
 
 Yes.
 
-You can use Google Gemini or run Ollama locally without relying on OpenAI.
+You can use Google Gemini or run Ollama locally without depending on OpenAI.
 
 = Does it support local AI models? =
 
 Yes.
 
-Ollama allows you to run compatible large language models locally on your own machine.
+Ollama allows you to run compatible large language models locally on your own server or computer.
 
 = Is the plugin multilingual? =
 
@@ -84,35 +85,45 @@ The plugin is fully translatable and supports RTL languages.
 
 Yes.
 
-A Gutenberg block is included.
+A Gutenberg block is included for adding AI chat functionality to your website.
 
 == Screenshots ==
 
-1. General Settings
-2. Provider Settings
-3. AI Chat
-4. Frontend Chat Widget
-5. Chat History
+General Settings
+Provider Settings
+AI Chat Interface
+Frontend Chat Widget
+Gutenberg Block
 
 == Changelog ==
 
+= 1.0.1 =
+
+Improved WordPress.org compatibility.
+Fixed WordPress coding standards issues.
+Improved security checks and output escaping.
+Improved admin dashboard structure.
+Improved frontend and backend assets management.
+Updated documentation.
+Improved plugin stability.
+
 = 1.0.0 =
 
-* Initial release.
-* OpenAI provider.
-* Google Gemini provider.
-* Ollama provider.
-* Provider connection test.
-* Automatic model loading.
-* AI chat interface.
-* Frontend chat widget.
-* Chat shortcode.
-* Gutenberg block.
-* Fully translatable.
-* RTL support.
+Initial release.
+OpenAI provider.
+Google Gemini provider.
+Ollama provider.
+Provider connection test.
+Automatic model loading.
+AI chat interface.
+Frontend chat widget.
+Chat shortcode.
+Gutenberg block.
+Fully translatable.
+RTL support.
 
 == Upgrade Notice ==
 
-= 1.0.0 =
+= 1.0.1 =
 
-Initial public release of PN AI Agent.
+Recommended update with improved compatibility, security improvements, and WordPress.org readiness.
