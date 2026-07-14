@@ -10,10 +10,17 @@ if (!defined('ABSPATH')) {
 
 final class Menu
 {
+
+    private const MENU_POSITION = 2;
+
     public function register(): void
     {
-        add_action('admin_menu', [$this, 'registerMenu'], 99);
+        add_action(
+            'admin_menu',
+            [$this, 'registerMenu']
+        );
     }
+    
 
     public function registerMenu(): void
     {
@@ -38,7 +45,7 @@ final class Menu
                 'pn-suite',
                 [$this, 'dashboard'],
                 'dashicons-admin-generic',
-                2
+                self::MENU_POSITION
             );
         }
 
@@ -57,35 +64,39 @@ final class Menu
             __('PN AI Agent', 'pn-ai-agent'),
             'manage_options',
             'pn-ai-agent',
-            [$this, 'agentPage']
+            [$this, 'tabsPage']
         );
     }
 
     public function dashboard(): void
     {
-        $this->renderView('dashboard');
+        $this->renderView('Dashboard');
     }
 
-    public function agentPage(): void
+    public function tabsPage(): void
     {
-        $this->renderView('agent');
+        (new Router())->render();
     }
-
+    
     private function renderView(string $view): void
     {
         if (!current_user_can('manage_options')) {
             wp_die(__('You do not have permission to access this page.', 'pn-ai-agent'));
         }
 
-        $file = PN_AI_AGENT_PATH . "src/Admin/Views/{$view}.php";
+        $file = PN_AI_AGENT_PATH . "src/Admin/{$view}.php";
 
         if (!file_exists($file)) {
-            wp_die(sprintf(
-                __('View "%s" not found.', 'pn-ai-agent'),
-                esc_html($view)
-            ));
-        }
 
-        require $file;
+           wp_die(
+                sprintf(
+                    /* translators: %s: Admin view name. */
+                    __('View "%s" not found.', 'pn-ai-agent'),
+                    esc_html($view)
+                )
+            );
+
+        }
+        require_once $file;
     }
 }

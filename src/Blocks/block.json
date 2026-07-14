@@ -6,6 +6,10 @@
     "name": "pn-ai-agent/chat",
 
     "title": "PN AI Chat",
+    
+    "description": "AI chat assistant for WordPress.",
+    
+    "keywords": ["ai", "chat", "assistant", "openai"], 
 
     "category": "widgets",
 
@@ -17,5 +21,7 @@
 
     "editorScript": "pn-ai-agent-block",
 
-    "render": "file:./render.php"
+    "render": "file:./render.php",
+    
+    "supports": {"html": false}
 }

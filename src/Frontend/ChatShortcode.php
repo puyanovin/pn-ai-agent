@@ -18,7 +18,7 @@ final class ChatShortcode
         );
     }
 
-    public function render($atts = [])
+    public function render(array $atts = []): string
     {
         $atts = shortcode_atts(
             [
@@ -31,10 +31,10 @@ final class ChatShortcode
             'pn_ai_chat'
         );
 
-        $title = $atts['title'];
-        $height = (int)$atts['height'];
-        $placeholder = $atts['placeholder'];
-        $button = $atts['button'];
+        $title = sanitize_text_field($atts['title']);
+        $height = max(200, min(1000, (int)$atts['height']));
+        $placeholder = sanitize_text_field($atts['placeholder']);
+        $button = sanitize_text_field($atts['button']);
 
         ob_start();
 

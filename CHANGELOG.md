@@ -4,18 +4,15 @@
 
 ### Added
 
-- Multiple AI Providers
-- OpenAI Support
-- Gemini Support
-- Claude Support
-- DeepSeek Support
-- Qwen Support
-- Chat Interface
-- Frontend Chat
-- Widget
-- Shortcode
-- Gutenberg Block
-- Logs
-- Provider Test
-- Internationalization
-- RTL Support
+- OpenAI provider
+- Google Gemini provider
+- Ollama provider
+- Provider connection test
+- AI chat interface
+- Frontend chat widget
+- Chat shortcode
+- Gutenberg block
+- Chat history
+- Settings page
+- Internationalization (i18n)
+- RTL support

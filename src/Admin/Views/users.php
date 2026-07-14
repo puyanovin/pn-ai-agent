@@ -1,5 +1,11 @@
 <?php
-if (!defined('ABSPATH')) exit;
-?>
 
-<h2>Coming Soon...</h2>
+declare(strict_types=1);
+
+use PNAIAgent\Admin\ProNotice;
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+ProNotice::render();

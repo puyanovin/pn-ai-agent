@@ -7,4 +7,10 @@ namespace PNAIAgent\Providers;
 interface ProviderInterface
 {
     public function testConnection(): array;
+
+    public function getModels(): array;
+
+    public function chat(string $prompt): array;
+
+    public function supportsStreaming(): bool;
 }

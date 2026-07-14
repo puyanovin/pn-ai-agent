@@ -22,6 +22,29 @@ class ComposerStaticInitae8708776474a9d2b647810d66f4ff5f
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'PNAIAgent\\Admin\\Admin' => __DIR__ . '/../..' . '/src/Admin/Admin.php',
+        'PNAIAgent\\Admin\\Ajax' => __DIR__ . '/../..' . '/src/Admin/Ajax.php',
+        'PNAIAgent\\Admin\\Assets' => __DIR__ . '/../..' . '/src/Admin/Assets.php',
+        'PNAIAgent\\Admin\\Menu' => __DIR__ . '/../..' . '/src/Admin/Menu.php',
+        'PNAIAgent\\Admin\\ProNotice' => __DIR__ . '/../..' . '/src/Admin/ProNotice.php',
+        'PNAIAgent\\Admin\\Router' => __DIR__ . '/../..' . '/src/Admin/Router.php',
+        'PNAIAgent\\Admin\\Settings' => __DIR__ . '/../..' . '/src/Admin/Settings.php',
+        'PNAIAgent\\Admin\\Tabs' => __DIR__ . '/../..' . '/src/Admin/Tabs.php',
+        'PNAIAgent\\Blocks\\ChatBlock' => __DIR__ . '/../..' . '/src/Blocks/ChatBlock.php',
+        'PNAIAgent\\Core\\Activator' => __DIR__ . '/../..' . '/src/Core/Activator.php',
+        'PNAIAgent\\Core\\Application' => __DIR__ . '/../..' . '/src/Core/Application.php',
+        'PNAIAgent\\Core\\Deactivator' => __DIR__ . '/../..' . '/src/Core/Deactivator.php',
+        'PNAIAgent\\Database\\Installer' => __DIR__ . '/../..' . '/src/Database/Installer.php',
+        'PNAIAgent\\Frontend\\ChatShortcode' => __DIR__ . '/../..' . '/src/Frontend/ChatShortcode.php',
+        'PNAIAgent\\Frontend\\ChatWidget' => __DIR__ . '/../..' . '/src/Frontend/ChatWidget.php',
+        'PNAIAgent\\Providers\\BaseProvider' => __DIR__ . '/../..' . '/src/Providers/BaseProvider.php',
+        'PNAIAgent\\Providers\\GeminiProvider' => __DIR__ . '/../..' . '/src/Providers/GeminiProvider.php',
+        'PNAIAgent\\Providers\\HttpProvider' => __DIR__ . '/../..' . '/src/Providers/HttpProvider.php',
+        'PNAIAgent\\Providers\\LockedProvider' => __DIR__ . '/../..' . '/src/Providers/LockedProvider.php',
+        'PNAIAgent\\Providers\\OllamaProvider' => __DIR__ . '/../..' . '/src/Providers/OllamaProvider.php',
+        'PNAIAgent\\Providers\\OpenAIProvider' => __DIR__ . '/../..' . '/src/Providers/OpenAIProvider.php',
+        'PNAIAgent\\Providers\\ProviderFactory' => __DIR__ . '/../..' . '/src/Providers/ProviderFactory.php',
+        'PNAIAgent\\Providers\\ProviderInterface' => __DIR__ . '/../..' . '/src/Providers/ProviderInterface.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

@@ -18,3 +18,4 @@ final class Admin
         (new Ajax())->register();
     }
 }
+

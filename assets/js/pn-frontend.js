@@ -1,9 +1,5 @@
-console.log('=== PN AI FRONTEND LOADED ===');
 
 jQuery(function ($) {
-
-    console.log('PN AI DOM READY');
-
 
     /*
      * Send message
@@ -84,12 +80,6 @@ jQuery(function ($) {
             chat.find('.pn-thinking').remove();
 
 
-            console.log(
-                'PN AI RESPONSE:',
-                response
-            );
-
-
             if(response.success){
 
 
@@ -98,7 +88,7 @@ jQuery(function ($) {
                     '<div class="pn-ai">' +
                         '<span>' +
                         $('<div>')
-                            .text(response.message)
+                            .text(response.data.message)
                             .html()
                         +
                         '</span>' +
@@ -116,8 +106,8 @@ jQuery(function ($) {
                         '<span style="color:red">' +
                         $('<div>')
                             .text(
-                                response.message ??
-                                'Unknown error'
+                                response.data.message ??
+                                pnAi.i18n.unknown_error
                             )
                             .html()
                         +
@@ -139,17 +129,11 @@ jQuery(function ($) {
             chat.find('.pn-thinking').remove();
 
 
-            console.error(
-                'PN AI AJAX ERROR:',
-                xhr
-            );
-
-
             windowBox.append(
 
                 '<div class="pn-ai">' +
                     '<span style="color:red">' +
-                    'Connection error' +
+                    pnAi.i18n.connection_error +
                     '</span>' +
                 '</div>'
 
@@ -168,9 +152,11 @@ jQuery(function ($) {
             );
 
 
-            windowBox.scrollTop(
-                windowBox[0].scrollHeight
-            );
+            if (windowBox.length) {
+                windowBox.scrollTop(
+                    windowBox[0].scrollHeight
+                );
+            }
 
 
         });

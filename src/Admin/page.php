@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use PNAIAgent\Admin\ProNotice;
+namespace PNAIAgent\Admin;
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-ProNotice::render();
+(new Router())->render();

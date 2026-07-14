@@ -1,8 +1,17 @@
 {
     "name": "pn-suite/pn-ai-agent",
-    "description": "Open-source AI Agent platform for WordPress.",
+    "description": "Open-source AI Assistant plugin for WordPress.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
+    "keywords": [
+        "wordpress",
+        "ai",
+        "chatbot",
+        "openai",
+        "gemini",
+        "ollama"
+    ],
+    "homepage": "https://plugins.puyanovin.ir/pn-ai-agent",
     "authors": [
         {
             "name": "PN Suite",
@@ -14,7 +23,7 @@
             "PNAIAgent\\": "src/"
         }
     },
+    "require": {},
     "minimum-stability": "stable",
-    "require": {}
+    "prefer-stable": true
 }
-

@@ -8,6 +8,9 @@
     <div 
         class="pn-chat-window"
         style="height:<?php echo esc_attr($height); ?>px;">
+
+        <div class="pn-chat-messages"></div>
+
     </div>
 
 
@@ -35,6 +38,5 @@
 
         </button>
     </p>
-
 
 </div>

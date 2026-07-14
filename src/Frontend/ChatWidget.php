@@ -15,7 +15,7 @@ class ChatWidget extends \WP_Widget
         );
     }
 
-    public function widget($args, $instance)
+    public function widget($args, $instance): void
     {
         echo $args['before_widget'];
 
@@ -24,8 +24,29 @@ class ChatWidget extends \WP_Widget
         echo $args['after_widget'];
     }
 
-    public function form($instance)
+    public function form($instance): void
     {
-        echo '<p>PN AI Chat Widget</p>';
+        $title = $instance['title'] ?? __('PN AI Chat', 'pn-ai-agent');
+
+        ?>
+        <p>
+            <label>
+                <?php esc_html_e('Title:', 'pn-ai-agent'); ?>
+            </label>
+
+            <input
+                class="widefat"
+                name="<?php echo esc_attr($this->get_field_name('title')); ?>"
+                value="<?php echo esc_attr($title); ?>"
+            >
+        </p>
+        <?php
+    }
+
+    public function update($new_instance, $old_instance): array
+    {
+        return [
+            'title' => sanitize_text_field($new_instance['title'] ?? '')
+        ];
     }
 }

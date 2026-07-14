@@ -8,25 +8,27 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-final class OpenAIProvider implements ProviderInterface
+final class OpenAIProvider extends HttpProvider
 {
+    protected string $provider = 'openai';
+
     public function testConnection(): array
     {
-        $apiKey = get_option('pn_ai_api_key', '');
-        $model  = get_option('pn_ai_model', 'gpt-4.1-mini');
-        $url    = get_option('pn_ai_api_url', 'https://api.openai.com/v1');
+
+        $config = $this->config();
+
+        $apiKey = $config['api_key'];
+        $model  = $config['model'];
+        $apiUrl = $config['api_url'];
 
         if (empty($apiKey)) {
-            return [
-                'success' => false,
-                'message' => 'API Key is empty.',
-            ];
+            return $this->error(
+                __('API Key is empty.', 'pn-ai-agent')
+            );
         }
 
-
-
         $response = wp_remote_post(
-            trailingslashit($url) . 'responses',
+            trailingslashit($apiUrl) . 'responses',
             [
                 'timeout' => 30,
                 'headers' => [
@@ -41,37 +43,36 @@ final class OpenAIProvider implements ProviderInterface
         );
 
         if (is_wp_error($response)) {
-            return [
-                'success' => false,
-                'message' => $response->get_error_message(),
-            ];
+            return $this->wpError($response);
         }
 
-        $code = wp_remote_retrieve_response_code($response);
+        $error = $this->responseError($response);
 
-        if ($code !== 200) {
-            return [
-                'success' => false,
-                'message' => wp_remote_retrieve_body($response),
-            ];
+        if ($error !== null) {
+            return $error;
         }
 
-        return [
-            'success' => true,
-            'message' => 'Connection successful.',
-        ];
+        return $this->success([
+            'message' => __('Connection successful.', 'pn-ai-agent'),
+        ]);
+
     }
 
     public function getModels(): array
     {
-        $apiKey = get_option('pn_ai_api_key', '');
-        $url = get_option(
-            'pn_ai_api_url',
-            'https://api.openai.com/v1'
-        );
+        $config = $this->config();
+
+        $apiKey = $config['api_key'];
+        $apiUrl = $config['api_url'];
+
+        if ($apiKey === '') {
+            throw new \Exception(
+                __('API Key is empty.', 'pn-ai-agent')
+            );
+        }
 
         $response = wp_remote_get(
-            trailingslashit($url) . 'models',
+            trailingslashit($apiUrl) . 'models',
             [
                 'timeout' => 30,
                 'headers' => [
@@ -80,64 +81,51 @@ final class OpenAIProvider implements ProviderInterface
             ]
         );
 
+
         if (is_wp_error($response)) {
-            return [
-                'success' => false,
-                'message' => $response->get_error_message(),
-            ];
-        }
-
-        $code = wp_remote_retrieve_response_code($response);
-
-        if ($code !== 200) {
-            return [
-                'success' => false,
-                'message' => wp_remote_retrieve_body($response),
-            ];
+            throw new \Exception(
+                $response->get_error_message()
+            );
         }
 
 
-        $data = json_decode(
-            wp_remote_retrieve_body($response),
-            true
-        );
+        $error = $this->responseError($response);
 
-        return [
-            'success' => true,
-            'message' =>
-                $data['choices'][0]['message']['content'] ?? ''
-        ];
+        if ($error !== null) {
+            throw new \Exception(
+                $error['data']['message'] ?? 'OpenAI error'
+            );
+        }
 
-        update_option(
-            'pn_ai_openai_models',
-            $models['data'],
-            false
-        );
 
-        return [
-            'success' => true,
-            'models' => $models['data'],
-        ];
+        $data = $this->decode($response);
+        error_log('[PN AI DEBUG] OpenAI Response: ' . print_r($data, true));
+
+
+        return $data['data'] ?? [];
     }
 
     public function chat(string $prompt): array
     {
-        $provider = get_option('pn_ai_provider', 'openai');
 
-        $apiKey = get_option(
-            "pn_ai_{$provider}_api_key",
-            ''
-        );
+        if (trim($prompt) === '') {
+            
+            return $this->error(
+                __('Prompt is empty.', 'pn-ai-agent')
+            );
+        }
+        
+        $config = $this->config();
 
-        $apiUrl = get_option(
-            "pn_ai_{$provider}_api_url",
-            'https://api.openai.com/v1'
-        );
+        $apiKey = $config['api_key'];
+        $model  = $config['model'];
+        $apiUrl = $config['api_url'];
 
-        $model = get_option(
-            "pn_ai_{$provider}_model",
-            'gpt-4o-mini'
-        );
+        if ($apiKey === '') {
+            return $this->error(
+                __('API Key is empty.', 'pn-ai-agent')
+            );
+        }
 
         $response = wp_remote_post(
             trailingslashit($apiUrl) . 'chat/completions',
@@ -160,52 +148,44 @@ final class OpenAIProvider implements ProviderInterface
         );
 
         if (is_wp_error($response)) {
-            return [
-                'success' => false,
-                'message' => $response->get_error_message(),
-            ];
+            return $this->wpError($response);
+        }
+        
+        $error = $this->responseError($response);
+
+        if ($error !== null) {
+            return $error;
         }
 
-        $data = json_decode(
-            wp_remote_retrieve_body($response),
-            true
-        );
+        $data = $this->decode($response);
 
         if (isset($data['error'])) {
-            return [
-                'success' => false,
-                'message' => $data['error']['message'],
-            ];
+            return $this->error(
+                $data['error']['message']
+                ?? __('Unknown provider error.', 'pn-ai-agent')
+            );
         }
-
-        global $wpdb;
 
         $answer = $data['choices'][0]['message']['content'] ?? '';
 
+        error_log(print_r($answer, true));
 
-        $table = $wpdb->prefix . 'pn_ai_chat_history';
+        if ($answer === '') {
+            return $this->error(
+                __('Empty response from provider.', 'pn-ai-agent')
+            );
+        }
 
-        $wpdb->insert(
-            $table,
-            [
-                'role'       => 'user',
-                'message'    => $prompt,
-                'created_at' => current_time('mysql'),
-            ]
-        );
+        error_log('ANSWER = ' . $answer);
 
-        $wpdb->insert(
-            $table,
-            [
-                'role'       => 'assistant',
-                'message'    => $answer,
-                'created_at' => current_time('mysql'),
-            ]
-        );
-
-        return [
-            'success' => true,
+        return $this->success([
             'message' => $answer,
-        ];
+        ]);
+
+        error_log(print_r($result, true));
+
+        return $result;
+
     }
+
 }

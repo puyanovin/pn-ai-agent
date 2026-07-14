@@ -6,223 +6,255 @@ if (!defined('ABSPATH')) {
 
 $currentProvider = get_option('pn_ai_provider', 'openai');
 
+$providers = [
+
+    'openai' => [
+        'label' => __('OpenAI', 'pn-ai-agent'),
+        'free'  => true,
+    ],
+
+    'gemini' => [
+        'label' => __('Google Gemini', 'pn-ai-agent'),
+        'free'  => true,
+    ],
+
+    'ollama' => [
+        'label' => __('Ollama (Local)', 'pn-ai-agent'),
+        'free'  => true,
+    ],
+
+    'anthropic' => [
+        'label' => __('Anthropic Claude', 'pn-ai-agent'),
+        'free'  => false,
+    ],
+
+    'openrouter' => [
+        'label' => __('OpenRouter', 'pn-ai-agent'),
+        'free'  => false,
+    ],
+
+];
+
 $apiUrl = get_option(
     "pn_ai_{$currentProvider}_api_url",
-    ''
+    \PNAIAgent\Providers\ProviderFactory::defaultUrl($currentProvider)
 );
-
-$apiKey = get_option(
-    "pn_ai_{$currentProvider}_api_key",
-    ''
-);
+$apiKey = get_option("pn_ai_{$currentProvider}_api_key", '');
 
 $model = get_option(
     "pn_ai_{$currentProvider}_model",
-    ''
+    \PNAIAgent\Providers\ProviderFactory::defaultModel($currentProvider)
 );
-
-$providers = [
-    'openai'     => 'OpenAI',
-    'gemini'     => 'Google Gemini',
-    'anthropic'  => 'Anthropic',
-    'openrouter' => 'OpenRouter',
-    'ollama'     => 'Ollama',
-];
 
 ?>
 
-<div class="card" style="max-width:900px;padding:20px">
+<div class="card" style="max-width:900px;">
 
-<h2>
+    <h2><?php esc_html_e('General Settings', 'pn-ai-agent'); ?></h2>
 
-<?php
-echo esc_html__(
-    'General Settings',
-    'pn-ai-agent'
-);
-?>
+    <p class="description">
 
-</h2>
+        <?php esc_html_e(
+            'Configure the default AI provider and connection settings.',
+            'pn-ai-agent'
+        ); ?>
 
-<table class="form-table">
+    </p>
 
-<tr>
+    <table class="form-table" role="presentation">
 
-<th>
+        <tbody>
 
-<?php
-echo esc_html__(
-    'Provider',
-    'pn-ai-agent'
-);
-?>
+        <tr>
 
-</th>
+            <th scope="row">
 
-<td>
+                <label for="pn_ai_provider">
 
-<select id="pn_ai_provider">
+                    <?php esc_html_e('AI Provider', 'pn-ai-agent'); ?>
 
-<?php foreach ($providers as $id => $name) : ?>
+                </label>
 
-<option
-value="<?php echo esc_attr($id); ?>"
-<?php selected($currentProvider, $id); ?>>
+            </th>
 
-<?php echo esc_html($name); ?>
+            <td>
 
-</option>
+                <select id="pn_ai_provider" name="pn_ai_provider">
 
-<?php endforeach; ?>
+                    <?php foreach ($providers as $id => $provider) : ?>
 
-</select>
+                        <option
+                            value="<?php echo esc_attr($id); ?>"
+                            <?php selected($currentProvider, $id); ?>>
 
-</td>
+                            <?php
+                            echo esc_html($provider['label']);
 
-</tr>
+                            if (!$provider['free']) {
+                                echo ' (PRO)';
+                            }
+                            ?>
 
-<tr>
+                        </option>
 
-<th>
+                    <?php endforeach; ?>
 
-<?php
-echo esc_html__(
-    'API URL',
-    'pn-ai-agent'
-);
-?>
+                </select>
 
-</th>
+                <p class="description">
 
-<td>
+                    <?php esc_html_e(
+                        'Choose the AI provider used by the plugin.',
+                        'pn-ai-agent'
+                    ); ?>
 
-<input
-type="text"
-id="pn_ai_api_url"
-class="regular-text"
-value="<?php echo esc_attr($apiUrl); ?>">
+                </p>
 
-</td>
+            </td>
 
-</tr>
+        </tr>
 
-<tr>
+        <tr>
 
-<th>
+            <th scope="row">
 
-<?php
-echo esc_html__(
-    'API Key',
-    'pn-ai-agent'
-);
-?>
+                <label for="pn_ai_api_url">
 
-</th>
+                    <?php esc_html_e('API Endpoint', 'pn-ai-agent'); ?>
 
-<td>
+                </label>
 
-<input
-type="password"
-id="pn_ai_api_key"
-class="regular-text"
-value="<?php echo esc_attr($apiKey); ?>">
+            </th>
 
-</td>
+            <td>
 
-</tr>
+                <input
+                    id="pn_ai_api_url"
+                    type="url"
+                    class="regular-text"
+                    value="<?php echo esc_attr($apiUrl); ?>">
 
-<tr>
+            </td>
 
-<th>
+        </tr>
 
-<?php
-echo esc_html__(
-    'Model',
-    'pn-ai-agent'
-);
-?>
+        <tr>
 
-</th>
+            <th scope="row">
 
-<td>
+                <label for="pn_ai_api_key">
 
-<select
-id="pn_ai_model"
-class="regular-text">
+                    <?php esc_html_e('API Key', 'pn-ai-agent'); ?>
 
-<?php if (!empty($model)) : ?>
+                </label>
 
-<option
-value="<?php echo esc_attr($model); ?>"
-selected>
+            </th>
 
-<?php echo esc_html($model); ?>
+            <td>
 
-</option>
+                <input
+                    id="pn_ai_api_key"
+                    type="password"
+                    class="regular-text"
+                    autocomplete="off"
+                    value="<?php echo esc_attr($apiKey); ?>">
 
-<?php else : ?>
+            </td>
 
-<option value="">
+        </tr>
 
-<?php
-echo esc_html__(
-    '-- Load Models --',
-    'pn-ai-agent'
-);
-?>
+        <tr>
 
-</option>
+            <th scope="row">
 
-<?php endif; ?>
+                <label for="pn_ai_model">
 
-</select>
+                    <?php esc_html_e('Default Model', 'pn-ai-agent'); ?>
 
-<button
-class="button"
-id="pn-load-models">
+                </label>
 
-<?php
-echo esc_html__(
-    'Load Models',
-    'pn-ai-agent'
-);
-?>
+            </th>
 
-</button>
+            <td>
 
-</td>
+                <select
+                    id="pn_ai_model"
+                    name="pn_ai_model"
+                    class="regular-text">
 
-</tr>
+                    <?php if ($model) : ?>
 
-</table>
+                        <option
+                            value="<?php echo esc_attr($model); ?>"
+                            selected>
 
-<p>
+                            <?php echo esc_html($model); ?>
 
-<button
-class="button pn-test-provider">
+                        </option>
 
-<?php
-echo esc_html__(
-    'Test Connection',
-    'pn-ai-agent'
-);
-?>
+                    <?php else : ?>
 
-</button>
+                        <option value="">
 
-<button
-class="button button-primary"
-id="pn-save-provider">
+                            <?php esc_html_e(
+                                'Select a model...',
+                                'pn-ai-agent'
+                            ); ?>
 
-<?php esc_html_e('Save Settings', 'pn-ai-agent'); ?>
+                        </option>
 
-</button>
+                    <?php endif; ?>
 
-<div
-id="pn-provider-status"
-style="margin-top:15px;">
-</div>
+                </select>
 
-</p>
+                <button
+                    type="button"
+                    class="button"
+                    id="pn-load-models">
+
+                    <?php esc_html_e(
+                        'Load Models',
+                        'pn-ai-agent'
+                    ); ?>
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+    <p>
+
+        <button
+            type="button"
+            class="button pn-test-provider"
+            id="pn-test-provider">
+
+            <?php esc_html_e(
+                'Test Connection',
+                'pn-ai-agent'
+            ); ?>
+
+        </button>
+
+        <button
+            type="button"
+            class="button button-primary"
+            id="pn-save-provider">
+
+            <?php esc_html_e(
+                'Save Settings',
+                'pn-ai-agent'
+            ); ?>
+
+        </button>
+
+    </p>
+
+    <div id="pn-provider-status"></div>
 
 </div>

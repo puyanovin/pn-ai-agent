@@ -23,7 +23,7 @@ final class ChatBlock
         $path = PN_AI_AGENT_PATH . 'src/Blocks';
 
         if (!file_exists($path . '/block.json')) {
-            wp_die('block.json not found:<br>' . esc_html($path));
+            return;
         }
 
         wp_register_script(
