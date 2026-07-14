@@ -1,5 +1,5 @@
 === PN AI Agent ===
-Contributors:
+Contributors: ahmad48
 Tags: ai, chatbot, openai, gemini, ollama
 Requires at least: 6.5
 Tested up to: 7.0
@@ -92,8 +92,6 @@ A Gutenberg block is included for adding AI chat functionality to your website.
 General Settings
 Provider Settings
 AI Chat Interface
-Frontend Chat Widget
-Gutenberg Block
 
 == Changelog ==
 
