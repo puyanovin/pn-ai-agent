@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<ruleset name="PN AI Agent">
+
+    <description>PHPCS configuration for PN AI Agent.</description>
+
+    <rule ref="WordPress"/>
+
+    <file>pn-ai-agent.php</file>
+    <file>src</file>
+    <file>uninstall.php</file>
+
+    <exclude-pattern>vendor/*</exclude-pattern>
+    <exclude-pattern>node_modules/*</exclude-pattern>
+    <exclude-pattern>assets/images/*</exclude-pattern>
+    <exclude-pattern>languages/*</exclude-pattern>
+
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg value="sp"/>
+
+</ruleset>

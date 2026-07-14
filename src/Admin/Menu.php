@@ -4,99 +4,102 @@ declare(strict_types=1);
 
 namespace PNAIAgent\Admin;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-final class Menu
-{
+final class Menu {
 
-    private const MENU_POSITION = 2;
 
-    public function register(): void
-    {
-        add_action(
-            'admin_menu',
-            [$this, 'registerMenu']
-        );
-    }
-    
+	private const MENU_POSITION = 2;
 
-    public function registerMenu(): void
-    {
-        global $menu;
+	public function register(): void {
+		add_action(
+			'admin_menu',
+			array( $this, 'registerMenu' )
+		);
+	}
 
-        $exists = false;
 
-        if (is_array($menu)) {
-            foreach ($menu as $item) {
-                if (isset($item[2]) && $item[2] === 'pn-suite') {
-                    $exists = true;
-                    break;
-                }
-            }
-        }
+	public function registerMenu(): void {
+		global $menu;
 
-        if (!$exists) {
-            add_menu_page(
-                __('PN Suite', 'pn-ai-agent'),
-                __('PN Suite', 'pn-ai-agent'),
-                'manage_options',
-                'pn-suite',
-                [$this, 'dashboard'],
-                'dashicons-admin-generic',
-                self::MENU_POSITION
-            );
-        }
+		$exists = false;
 
-        add_submenu_page(
-            'pn-suite',
-            __('Dashboard', 'pn-ai-agent'),
-            __('Dashboard', 'pn-ai-agent'),
-            'manage_options',
-            'pn-suite',
-            [$this, 'dashboard']
-        );
+		if ( is_array( $menu ) ) {
+			foreach ( $menu as $item ) {
+				if ( isset( $item[2] ) && $item[2] === 'pn-suite' ) {
+					$exists = true;
+					break;
+				}
+			}
+		}
 
-        add_submenu_page(
-            'pn-suite',
-            __('PN AI Agent', 'pn-ai-agent'),
-            __('PN AI Agent', 'pn-ai-agent'),
-            'manage_options',
-            'pn-ai-agent',
-            [$this, 'tabsPage']
-        );
-    }
+		if ( ! $exists ) {
+			add_menu_page(
+				__( 'PN Suite', 'pn-ai-agent' ),
+				__( 'PN Suite', 'pn-ai-agent' ),
+				'manage_options',
+				'pn-suite',
+				array( $this, 'dashboard' ),
+				'dashicons-admin-generic',
+				self::MENU_POSITION
+			);
+		}
 
-    public function dashboard(): void
-    {
-        $this->renderView('Dashboard');
-    }
+		add_submenu_page(
+			'pn-suite',
+			__( 'Dashboard', 'pn-ai-agent' ),
+			__( 'Dashboard', 'pn-ai-agent' ),
+			'manage_options',
+			'pn-suite',
+			array( $this, 'dashboard' )
+		);
 
-    public function tabsPage(): void
-    {
-        (new Router())->render();
-    }
-    
-    private function renderView(string $view): void
-    {
-        if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have permission to access this page.', 'pn-ai-agent'));
-        }
+		add_submenu_page(
+			'pn-suite',
+			__( 'PN AI Agent', 'pn-ai-agent' ),
+			__( 'PN AI Agent', 'pn-ai-agent' ),
+			'manage_options',
+			'pn-ai-agent',
+			array( $this, 'tabsPage' )
+		);
+	}
 
-        $file = PN_AI_AGENT_PATH . "src/Admin/{$view}.php";
+	public function dashboard(): void {
+		$this->renderView( 'Dashboard' );
+	}
 
-        if (!file_exists($file)) {
+	public function tabsPage(): void {
+		( new Router() )->render();
+	}
 
-           wp_die(
-                sprintf(
-                    /* translators: %s: Admin view name. */
-                    __('View "%s" not found.', 'pn-ai-agent'),
-                    esc_html($view)
-                )
-            );
+	private function renderView( string $view ): void {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die(
+				esc_html__(
+					'You do not have permission to access this page.',
+					'pn-ai-agent'
+				)
+			);
+		}
 
-        }
-        require_once $file;
-    }
+		$file = PN_AI_AGENT_PATH . "src/Admin/{$view}.php";
+
+		if ( ! file_exists( $file ) ) {
+
+			wp_die(
+				sprintf(
+					/* translators: %s: Admin view name. */
+					esc_html__(
+						'View "%s" not found.',
+						'pn-ai-agent'
+					),
+					esc_html( $view )
+				)
+			);
+
+		}
+		require_once $file;
+	}
 }

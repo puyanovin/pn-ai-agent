@@ -6,20 +6,17 @@ namespace PNAIAgent\Core;
 use PNAIAgent\Database\Installer;
 
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-final class Activator
-{
-    public static function activate(): void
-    {
-        Installer::install();
+final class Activator {
 
-        update_option('pn_ai_agent_version', PN_AI_AGENT_VERSION);
+	public static function activate(): void {
+		Installer::install();
 
-        flush_rewrite_rules();
-    }
+		update_option( 'pn_ai_agent_version', PN_AI_AGENT_VERSION );
+
+		flush_rewrite_rules();
+	}
 }
-
-

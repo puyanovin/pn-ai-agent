@@ -4,132 +4,137 @@ declare(strict_types=1);
 
 namespace PNAIAgent\Providers;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-final class OllamaProvider extends BaseProvider
-{
-    protected string $provider = 'ollama';
+final class OllamaProvider extends BaseProvider {
 
-    public function testConnection(): array
-    {
-        $config = $this->config();
+	protected string $provider = 'ollama';
 
-        $response = wp_remote_get(
-            trailingslashit($config['api_url']) . 'tags',
-            [
-                'timeout' => 15,
-            ]
-        );
+	public function testConnection(): array {
+		$config = $this->config();
 
-        if (is_wp_error($response)) {
-            return $this->wpError($response);
-        }
+		$response = wp_remote_get(
+			trailingslashit( $config['api_url'] ) . 'tags',
+			array(
+				'timeout' => 15,
+			)
+		);
 
-        $error = $this->responseError($response);
+		if ( is_wp_error( $response ) ) {
+			return $this->wpError( $response );
+		}
 
-        if ($error !== null) {
-            return $error;
-        }
+		$error = $this->responseError( $response );
 
-        return $this->success([
-            'message' => __('Connection successful.', 'pn-ai-agent'),
-        ]);
-    }
+		if ( $error !== null ) {
+			return $error;
+		}
 
-    public function getModels(): array
-    {
-        $config = $this->config();
+		return $this->success(
+			array(
+				'message' => __( 'Connection successful.', 'pn-ai-agent' ),
+			)
+		);
+	}
 
-        $response = wp_remote_get(
-            trailingslashit($config['api_url']) . 'tags',
-            [
-                'timeout' => 30,
-            ]
-        );
+	public function getModels(): array {
+		$config = $this->config();
 
-        if (is_wp_error($response)) {
-            return $this->wpError($response);
-        }
+		$response = wp_remote_get(
+			trailingslashit( $config['api_url'] ) . 'tags',
+			array(
+				'timeout' => 30,
+			)
+		);
 
-        $error = $this->responseError($response);
+		if ( is_wp_error( $response ) ) {
+			return $this->wpError( $response );
+		}
 
-        if ($error !== null) {
-            return $error;
-        }
+		$error = $this->responseError( $response );
 
-        $data = $this->decode($response);
+		if ( $error !== null ) {
+			return $error;
+		}
 
-        $models = [];
+		$data = $this->decode( $response );
 
-        foreach ($data['models'] ?? [] as $model) {
+		$models = array();
 
-            $models[] = [
-                'id' => $model['name'],
-            ];
+		foreach ( $data['models'] ?? array() as $model ) {
 
-        }
+			$models[] = array(
+				'id' => $model['name'],
+			);
 
-        return $this->success([
-            'models' => $models,
-        ]);
-    }
+		}
 
-    public function chat(string $prompt): array
-    {
-        if (trim($prompt) === '') {
-            return $this->error(
-                __('Prompt is empty.', 'pn-ai-agent')
-            );
-        }
+		return $this->success(
+			array(
+				'models' => $models,
+			)
+		);
+	}
 
-        $config = $this->config();
+	public function chat( string $prompt ): array {
+		if ( trim( $prompt ) === '' ) {
+			return $this->error(
+				__( 'Prompt is empty.', 'pn-ai-agent' )
+			);
+		}
 
-        $response = wp_remote_post(
-            trailingslashit($config['api_url']) . 'chat',
-            [
-                'timeout' => 300,
+		$config = $this->config();
 
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                ],
+		$response = wp_remote_post(
+			trailingslashit( $config['api_url'] ) . 'chat',
+			array(
+				'timeout' => 300,
 
-                'body' => wp_json_encode([
-                    'model' => $config['model'],
-                    'messages' => [
-                        [
-                            'role' => 'user',
-                            'content' => $prompt,
-                        ],
-                    ],
-                    'stream' => false,
-                ]),
-            ]
-        );
+				'headers' => array(
+					'Content-Type' => 'application/json',
+				),
 
-        if (is_wp_error($response)) {
-            return $this->wpError($response);
-        }
+				'body'    => wp_json_encode(
+					array(
+						'model'    => $config['model'],
+						'messages' => array(
+							array(
+								'role'    => 'user',
+								'content' => $prompt,
+							),
+						),
+						'stream'   => false,
+					)
+				),
+			)
+		);
 
-        $error = $this->responseError($response);
+		if ( is_wp_error( $response ) ) {
+			return $this->wpError( $response );
+		}
 
-        if ($error !== null) {
-            return $error;
-        }
+		$error = $this->responseError( $response );
 
-        $data = $this->decode($response);
+		if ( $error !== null ) {
+			return $error;
+		}
 
-        $answer = $data['message']['content'] ?? '';
+		$data = $this->decode( $response );
 
-        if ($answer === '') {
-            return $this->error(
-                __('Empty response from provider.', 'pn-ai-agent')
-            );
-        }
+		$answer = $data['message']['content'] ?? '';
 
-        return $this->success([
-            'message' => $answer,
-        ]);
-    }
+		if ( $answer === '' ) {
+			return $this->error(
+				__( 'Empty response from provider.', 'pn-ai-agent' )
+			);
+		}
+
+		return $this->success(
+			array(
+				'message' => $answer,
+			)
+		);
+	}
 }

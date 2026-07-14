@@ -10,8 +10,8 @@ declare(strict_types=1);
  * @package PN_AI_Agent
  */
 
-if (!defined('WP_UNINSTALL_PLUGIN')) {
-    exit;
+if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+	exit;
 }
 
 /*
@@ -20,31 +20,31 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 |--------------------------------------------------------------------------
 */
 
-$options = [
+$options = array(
 
-    // General
-    'pn_ai_provider',
-    'pn_ai_license_key',
+	// General
+	'pn_ai_provider',
+	'pn_ai_license_key',
 
-    // OpenAI
-    'pn_ai_openai_api_url',
-    'pn_ai_openai_api_key',
-    'pn_ai_openai_model',
+	// OpenAI
+	'pn_ai_openai_api_url',
+	'pn_ai_openai_api_key',
+	'pn_ai_openai_model',
 
-    // Google Gemini
-    'pn_ai_gemini_api_url',
-    'pn_ai_gemini_api_key',
-    'pn_ai_gemini_model',
+	// Google Gemini
+	'pn_ai_gemini_api_url',
+	'pn_ai_gemini_api_key',
+	'pn_ai_gemini_model',
 
-    // Ollama
-    'pn_ai_ollama_api_url',
-    'pn_ai_ollama_api_key',
-    'pn_ai_ollama_model',
+	// Ollama
+	'pn_ai_ollama_api_url',
+	'pn_ai_ollama_api_key',
+	'pn_ai_ollama_model',
 
-];
+);
 
-foreach ($options as $option) {
-    delete_option($option);
+foreach ( $options as $option ) {
+	delete_option( $option );
 }
 
 /*
@@ -53,22 +53,22 @@ foreach ($options as $option) {
 |--------------------------------------------------------------------------
 */
 
-if (is_multisite()) {
+if ( is_multisite() ) {
 
-    global $wpdb;
+	global $wpdb;
 
-    $blogIds = $wpdb->get_col(
-        "SELECT blog_id FROM {$wpdb->blogs}"
-    );
+	$blogIds = $wpdb->get_col(
+		"SELECT blog_id FROM {$wpdb->blogs}"
+	);
 
-    foreach ($blogIds as $blogId) {
+	foreach ( $blogIds as $blogId ) {
 
-        switch_to_blog((int) $blogId);
+		switch_to_blog( (int) $blogId );
 
-        foreach ($options as $option) {
-            delete_option($option);
-        }
+		foreach ( $options as $option ) {
+			delete_option( $option );
+		}
 
-        restore_current_blog();
-    }
+		restore_current_blog();
+	}
 }

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace PNAIAgent\Providers;
 
-interface ProviderInterface
-{
-    public function testConnection(): array;
+interface ProviderInterface {
 
-    public function getModels(): array;
+	public function testConnection(): array;
 
-    public function chat(string $prompt): array;
+	public function getModels(): array;
 
-    public function supportsStreaming(): bool;
+	public function chat( string $prompt ): array;
+
+	public function supportsStreaming(): bool;
 }

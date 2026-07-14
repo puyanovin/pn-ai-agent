@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use PNAIAgent\Admin\ProNotice;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 ProNotice::render();

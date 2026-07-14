@@ -4,75 +4,69 @@ declare(strict_types=1);
 
 namespace PNAIAgent\Admin;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-final class Router
-{
-    public function render(): void
-    {
-        $tab = sanitize_key(
-            $_GET['tab'] ?? 'general'
-        );
+final class Router {
 
-        ?>
+	public function render(): void {
+		$tab = sanitize_key(
+			$_GET['tab'] ?? 'general'
+		);
 
-        <div class="wrap">
+		?>
 
-            <h1>
-                <?php esc_html_e('PN AI Agent', 'pn-ai-agent'); ?>
-            </h1>
+		<div class="wrap">
 
-            <?php Tabs::render($tab); ?>
+			<h1>
+				<?php esc_html_e( 'PN AI Agent', 'pn-ai-agent' ); ?>
+			</h1>
 
-            <?php $this->loadView($tab); ?>
+			<?php Tabs::render( $tab ); ?>
 
-        </div>
+			<?php $this->loadView( $tab ); ?>
 
-        <?php
-    }
+		</div>
 
-
-    private function loadView(string $tab): void
-    {
-
-        $allowed = [
-            'general',
-            'providers',
-            'models',
-            'agent',
-            'mcp',
-            'knowledge',
-            'chat',
-            'images',
-            'users',
-            'logs',
-            'license',
-        ];
+		<?php
+	}
 
 
-        if (!in_array($tab, $allowed, true)) {
-            $tab = 'general';
-        }
+	private function loadView( string $tab ): void {
 
+		$allowed = array(
+			'general',
+			'providers',
+			'models',
+			'agent',
+			'mcp',
+			'knowledge',
+			'chat',
+			'images',
+			'users',
+			'logs',
+			'license',
+		);
 
-        $file = PN_AI_AGENT_PATH .
-            'src/Admin/Views/' .
-            $tab .
-            '.php';
+		if ( ! in_array( $tab, $allowed, true ) ) {
+			$tab = 'general';
+		}
 
+		$file = PN_AI_AGENT_PATH .
+			'src/Admin/Views/' .
+			$tab .
+			'.php';
 
-        if (file_exists($file)) {
+		if ( file_exists( $file ) ) {
 
-            require $file;
+			require $file;
 
-        } else {
+		} else {
 
-            require PN_AI_AGENT_PATH .
-                'src/Admin/Views/general.php';
+			require PN_AI_AGENT_PATH .
+				'src/Admin/Views/general.php';
 
-        }
-
-    }
+		}
+	}
 }

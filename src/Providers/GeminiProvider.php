@@ -4,128 +4,130 @@ declare(strict_types=1);
 
 namespace PNAIAgent\Providers;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-final class GeminiProvider extends BaseProvider
-{
-    protected string $provider = 'gemini';
+final class GeminiProvider extends BaseProvider {
 
-    public function testConnection(): array
-    {
-        $config = $this->config();
+	protected string $provider = 'gemini';
 
-        if ($config['api_key'] === '') {
-            return $this->error(
-                __('API Key is empty.', 'pn-ai-agent')
-            );
-        }
+	public function testConnection(): array {
+		$config = $this->config();
 
-        return $this->chat('Reply with only: OK');
-    }
+		if ( $config['api_key'] === '' ) {
+			return $this->error(
+				__( 'API Key is empty.', 'pn-ai-agent' )
+			);
+		}
 
-    public function getModels(): array
-    {
-        $config = $this->config();
+		return $this->chat( 'Reply with only: OK' );
+	}
 
-        if ($config['api_key'] === '') {
-            return $this->error(
-                __('API Key is empty.', 'pn-ai-agent')
-            );
-        }
+	public function getModels(): array {
+		$config = $this->config();
 
-        $response = wp_remote_get(
-            trailingslashit($config['api_url']) .
-            'models?key=' .
-            rawurlencode($config['api_key']),
-            [
-                'timeout' => 30,
-            ]
-        );
+		if ( $config['api_key'] === '' ) {
+			return $this->error(
+				__( 'API Key is empty.', 'pn-ai-agent' )
+			);
+		}
 
-        if (is_wp_error($response)) {
-            return $this->wpError($response);
-        }
+		$response = wp_remote_get(
+			trailingslashit( $config['api_url'] ) .
+			'models?key=' .
+			rawurlencode( $config['api_key'] ),
+			array(
+				'timeout' => 30,
+			)
+		);
 
-        $error = $this->responseError($response);
+		if ( is_wp_error( $response ) ) {
+			return $this->wpError( $response );
+		}
 
-        if ($error !== null) {
-            return $error;
-        }
+		$error = $this->responseError( $response );
 
+		if ( $error !== null ) {
+			return $error;
+		}
 
-        $data = $this->decode($response);
+		$data = $this->decode( $response );
 
-        return $this->success([
-            'models' => $data['models'] ?? [],
-        ]);
-    }
+		return $this->success(
+			array(
+				'models' => $data['models'] ?? array(),
+			)
+		);
+	}
 
-    public function chat(string $prompt): array
-    {
-        $config = $this->config();
+	public function chat( string $prompt ): array {
+		$config = $this->config();
 
-        if ($config['api_key'] === '') {
-            return $this->error(
-                __('API Key is empty.', 'pn-ai-agent')
-            );
-        }
+		if ( $config['api_key'] === '' ) {
+			return $this->error(
+				__( 'API Key is empty.', 'pn-ai-agent' )
+			);
+		}
 
-        $url =
-            trailingslashit($config['api_url']) .
-            'models/' .
-            $config['model'] .
-            ':generateContent?key=' .
-            rawurlencode($config['api_key']);
+		$url =
+			trailingslashit( $config['api_url'] ) .
+			'models/' .
+			$config['model'] .
+			':generateContent?key=' .
+			rawurlencode( $config['api_key'] );
 
-        $response = wp_remote_post(
-            $url,
-            [
-                'timeout' => 60,
+		$response = wp_remote_post(
+			$url,
+			array(
+				'timeout' => 60,
 
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                ],
+				'headers' => array(
+					'Content-Type' => 'application/json',
+				),
 
-                'body' => wp_json_encode([
-                    'contents' => [
-                        [
-                            'parts' => [
-                                [
-                                    'text' => $prompt,
-                                ],
-                            ],
-                        ],
-                    ],
-                ]),
-            ]
-        );
+				'body'    => wp_json_encode(
+					array(
+						'contents' => array(
+							array(
+								'parts' => array(
+									array(
+										'text' => $prompt,
+									),
+								),
+							),
+						),
+					)
+				),
+			)
+		);
 
-        if (is_wp_error($response)) {
-            return $this->wpError($response);
-        }
+		if ( is_wp_error( $response ) ) {
+			return $this->wpError( $response );
+		}
 
-        $error = $this->responseError($response);
+		$error = $this->responseError( $response );
 
-        if ($error !== null) {
-            return $error;
-        }
+		if ( $error !== null ) {
+			return $error;
+		}
 
-        $data = $this->decode($response);
+		$data = $this->decode( $response );
 
-        $answer =
-            $data['candidates'][0]['content']['parts'][0]['text']
-            ?? '';
+		$answer =
+			$data['candidates'][0]['content']['parts'][0]['text']
+			?? '';
 
-        if ($answer === '') {
-            return $this->error(
-                __('Empty response from provider.', 'pn-ai-agent')
-            );
-        }
+		if ( $answer === '' ) {
+			return $this->error(
+				__( 'Empty response from provider.', 'pn-ai-agent' )
+			);
+		}
 
-        return $this->success([
-            'message' => $answer,
-        ]);
-    }
+		return $this->success(
+			array(
+				'message' => $answer,
+			)
+		);
+	}
 }

@@ -6,364 +6,344 @@ namespace PNAIAgent\Admin;
 
 use PNAIAgent\Providers\ProviderFactory;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-final class Ajax
-{
+final class Ajax {
 
-    public function register(): void
-    {
-        add_action('wp_ajax_pn_ai_get_models', [$this, 'getModels']);
-        add_action('wp_ajax_pn_ai_save_model', [$this, 'saveModel']);
-        add_action('wp_ajax_pn_ai_provider_data', [$this, 'providerData']);
-        add_action('wp_ajax_pn_ai_save_provider_settings', [$this, 'saveProviderSettings']);
-        add_action('wp_ajax_pn_ai_chat', [$this, 'chat']);
-        add_action('wp_ajax_pn_ai_test_provider', [$this, 'testProvider']);
-        add_action('wp_ajax_pn_ai_save_license', [$this, 'saveLicense']);
-    }
 
+	public function register(): void {
+		add_action( 'wp_ajax_pn_ai_get_models', array( $this, 'getModels' ) );
+		add_action( 'wp_ajax_pn_ai_save_model', array( $this, 'saveModel' ) );
+		add_action( 'wp_ajax_pn_ai_provider_data', array( $this, 'providerData' ) );
+		add_action( 'wp_ajax_pn_ai_save_provider_settings', array( $this, 'saveProviderSettings' ) );
+		add_action( 'wp_ajax_pn_ai_chat', array( $this, 'chat' ) );
+		add_action( 'wp_ajax_pn_ai_test_provider', array( $this, 'testProvider' ) );
+		add_action( 'wp_ajax_pn_ai_save_license', array( $this, 'saveLicense' ) );
+	}
 
-    public function getModels(): void
-    {
-        check_ajax_referer('pn_ai_agent');
 
-        $this->checkPermission();
+	public function getModels(): void {
+		check_ajax_referer( 'pn_ai_agent' );
 
-        try {
+		$this->checkPermission();
 
-            $provider = ProviderFactory::make(
-                sanitize_text_field(
-                    wp_unslash($_POST['provider'] ?? '')
-                )
-            );
+		try {
 
+			$provider = ProviderFactory::make(
+				sanitize_text_field(
+					wp_unslash( $_POST['provider'] ?? '' )
+				)
+			);
 
-            $models = $provider->getModels();
+			$models = $provider->getModels();
 
+			wp_send_json_success(
+				array(
+					'models' => $models,
+				)
+			);
 
-            wp_send_json_success([
-                'models' => $models
-            ]);
+		} catch ( \Throwable $e ) {
 
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+					'models'  => array(),
+				)
+			);
 
-        } catch (\Throwable $e) {
+		}
+	}
 
-            error_log('[PN AI Agent] ' . $e->getMessage());
 
-            wp_send_json_error([
-                'message' => $e->getMessage(),
-                'models'  => []
-            ]);
+	public function saveModel(): void {
+		check_ajax_referer( 'pn_ai_agent' );
 
-        }
-    }
+		$this->checkPermission();
 
+		$provider = $this->allowedProvider(
+			sanitize_text_field(
+				wp_unslash( $_POST['provider'] ?? 'openai' )
+			)
+		);
 
-    public function saveModel(): void
-    {
-        check_ajax_referer('pn_ai_agent');
+		$model = sanitize_text_field(
+			wp_unslash( $_POST['model'] ?? '' )
+		);
 
-        $this->checkPermission();
+		if ( $model === '' ) {
 
-        $provider = $this->allowedProvider(
-            sanitize_text_field(
-                wp_unslash($_POST['provider'] ?? 'openai')
-            )
-        );
+			wp_send_json_error(
+				array(
+					'message' => __( 'Model is required.', 'pn-ai-agent' ),
+				)
+			);
 
-        $model = sanitize_text_field(
-            wp_unslash($_POST['model'] ?? '')
-        );
+		}
 
+		update_option(
+			"pn_ai_{$provider}_model",
+			$model
+		);
 
-        if ($model === '') {
+		wp_send_json_success(
+			array(
+				'message' => __( 'Model saved.', 'pn-ai-agent' ),
+			)
+		);
+	}
 
-            wp_send_json_error([
-                'message' => __('Model is required.', 'pn-ai-agent'),
-            ]);
 
-        }
+	public function providerData(): void {
+		check_ajax_referer( 'pn_ai_agent' );
 
+		$this->checkPermission();
 
-        update_option(
-            "pn_ai_{$provider}_model",
-            $model
-        );
+		$provider = $this->allowedProvider(
+			sanitize_text_field(
+				wp_unslash( $_POST['provider'] ?? 'openai' )
+			)
+		);
 
+		wp_send_json_success(
+			array(
 
-        wp_send_json_success([
-            'message' => __('Model saved.', 'pn-ai-agent'),
-        ]);
-    }
+				'api_url' => get_option(
+					"pn_ai_{$provider}_api_url",
+					ProviderFactory::defaultUrl( $provider )
+				),
 
+				'api_key' => get_option(
+					"pn_ai_{$provider}_api_key",
+					''
+				),
 
-    public function providerData(): void
-    {
-        check_ajax_referer('pn_ai_agent');
+				'model'   => get_option(
+					"pn_ai_{$provider}_model",
+					ProviderFactory::defaultModel( $provider )
+				),
 
-        $this->checkPermission();
+			)
+		);
+	}
 
 
-        $provider = $this->allowedProvider(
-            sanitize_text_field(
-                wp_unslash($_POST['provider'] ?? 'openai')
-            )
-        );
 
+	public function saveProviderSettings(): void {
+		check_ajax_referer( 'pn_ai_agent' );
 
-        wp_send_json_success([
+		$this->checkPermission();
 
-            'api_url' => get_option(
-                "pn_ai_{$provider}_api_url",
-                ProviderFactory::defaultUrl($provider)
-            ),
+		$provider = $this->allowedProvider(
+			sanitize_text_field(
+				wp_unslash( $_POST['provider'] ?? 'openai' )
+			)
+		);
 
-            'api_key' => get_option(
-                "pn_ai_{$provider}_api_key",
-                ''
-            ),
+		$apiUrl = esc_url_raw(
+			wp_unslash( $_POST['api_url'] ?? '' )
+		);
 
-            'model' => get_option(
-                "pn_ai_{$provider}_model",
-                ProviderFactory::defaultModel($provider)
-            ),
+		$apiKey = sanitize_text_field(
+			wp_unslash( $_POST['api_key'] ?? '' )
+		);
 
-        ]);
-    }
+		$model = sanitize_text_field(
+			wp_unslash( $_POST['model'] ?? '' )
+		);
 
+		if ( $apiUrl === '' ) {
 
+			wp_send_json_error(
+				array(
+					'message' => __( 'API URL is required.', 'pn-ai-agent' ),
+				)
+			);
 
-    public function saveProviderSettings(): void
-    {
-        check_ajax_referer('pn_ai_agent');
+		}
 
-        $this->checkPermission();
+		if ( $apiKey === '' && $provider !== 'ollama' ) {
 
+			wp_send_json_error(
+				array(
+					'message' => __( 'API Key is required.', 'pn-ai-agent' ),
+				)
+			);
 
-        $provider = $this->allowedProvider(
-            sanitize_text_field(
-                wp_unslash($_POST['provider'] ?? 'openai')
-            )
-        );
+		}
 
+		if ( $model === '' ) {
 
-        $apiUrl = esc_url_raw(
-            wp_unslash($_POST['api_url'] ?? '')
-        );
+			wp_send_json_error(
+				array(
+					'message' => __( 'Model is required.', 'pn-ai-agent' ),
+				)
+			);
 
+		}
 
-        $apiKey = sanitize_text_field(
-            wp_unslash($_POST['api_key'] ?? '')
-        );
+		update_option(
+			'pn_ai_provider',
+			$provider
+		);
 
+		update_option(
+			"pn_ai_{$provider}_api_url",
+			$apiUrl
+		);
 
-        $model = sanitize_text_field(
-            wp_unslash($_POST['model'] ?? '')
-        );
+		update_option(
+			"pn_ai_{$provider}_api_key",
+			$apiKey
+		);
 
+		update_option(
+			"pn_ai_{$provider}_model",
+			$model
+		);
 
-        if ($apiUrl === '') {
+		wp_send_json_success(
+			array(
+				'message' => __( 'Settings saved.', 'pn-ai-agent' ),
+			)
+		);
+	}
 
-            wp_send_json_error([
-                'message' => __('API URL is required.', 'pn-ai-agent'),
-            ]);
 
-        }
 
+	public function chat(): void {
+		check_ajax_referer( 'pn_ai_agent' );
 
-        if ($apiKey === '' && $provider !== 'ollama') {
+		$prompt = sanitize_textarea_field(
+			wp_unslash( $_POST['prompt'] ?? '' )
+		);
 
-            wp_send_json_error([
-                'message' => __('API Key is required.', 'pn-ai-agent'),
-            ]);
+		if ( trim( $prompt ) === '' ) {
 
-        }
+			wp_send_json_error(
+				array(
+					'message' => __( 'Prompt is empty.', 'pn-ai-agent' ),
+				)
+			);
 
+		}
 
-        if ($model === '') {
+		try {
 
-            wp_send_json_error([
-                'message' => __('Model is required.', 'pn-ai-agent'),
-            ]);
+			$provider = ProviderFactory::make();
 
-        }
+			$result = $provider->chat( $prompt );
 
+			if (
+				isset( $result['success'] ) &&
+				$result['success'] === true
+			) {
 
-        update_option(
-            'pn_ai_provider',
-            $provider
-        );
+				wp_send_json_success(
+					$result['data'] ?? array()
+				);
 
+			}
 
-        update_option(
-            "pn_ai_{$provider}_api_url",
-            $apiUrl
-        );
+			wp_send_json_error(
+				array(
+					'message' =>
+						$result['data']['message']
+						?? $result['message']
+						?? __( 'Unknown error.', 'pn-ai-agent' ),
+				)
+			);
 
+		} catch ( \Throwable $e ) {
 
-        update_option(
-            "pn_ai_{$provider}_api_key",
-            $apiKey
-        );
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
 
+		}
+	}
 
-        update_option(
-            "pn_ai_{$provider}_model",
-            $model
-        );
 
 
-        wp_send_json_success([
-            'message' => __('Settings saved.', 'pn-ai-agent'),
-        ]);
-    }
+	public function testProvider(): void {
+		check_ajax_referer( 'pn_ai_agent' );
 
+		$this->checkPermission();
 
+		try {
 
-    public function chat(): void
-    {
-        check_ajax_referer('pn_ai_agent');
+			$provider = ProviderFactory::make(
+				sanitize_text_field(
+					wp_unslash( $_POST['provider'] ?? '' )
+				)
+			);
 
-        $prompt = sanitize_textarea_field(
-            wp_unslash($_POST['prompt'] ?? '')
-        );
+			wp_send_json(
+				$provider->testConnection()
+			);
 
+		} catch ( \Throwable $e ) {
 
-        if (trim($prompt) === '') {
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
 
-            wp_send_json_error([
-                'message' => __('Prompt is empty.', 'pn-ai-agent'),
-            ]);
+		}
+	}
 
-        }
 
 
-        try {
+	private function checkPermission(): void {
+		if ( ! current_user_can( 'manage_options' ) ) {
 
-            $provider = ProviderFactory::make();
+			wp_send_json_error(
+				array(
+					'message' => __( 'Permission denied.', 'pn-ai-agent' ),
+				),
+				403
+			);
 
-            $result = $provider->chat($prompt);
+		}
+	}
 
-            if (
-                isset($result['success']) &&
-                $result['success'] === true
-            ) {
 
-                wp_send_json_success(
-                    $result['data'] ?? []
-                );
 
-            }
+	private function allowedProvider( string $provider ): string {
+		return in_array(
+			$provider,
+			ProviderFactory::ALLOWED_PROVIDERS,
+			true
+		)
+			? $provider
+			: 'openai';
+	}
 
 
-            wp_send_json_error([
-                'message' =>
-                    $result['data']['message']
-                    ?? $result['message']
-                    ?? __('Unknown error.', 'pn-ai-agent')
-            ]);
 
+	public function saveLicense(): void {
+		check_ajax_referer( 'pn_ai_agent' );
 
-        } catch (\Throwable $e) {
+		$this->checkPermission();
 
-            error_log('[PN AI Agent] ' . $e->getMessage());
+		$license = sanitize_text_field(
+			wp_unslash( $_POST['license'] ?? '' )
+		);
 
+		update_option(
+			'pn_ai_license_key',
+			$license
+		);
 
-            wp_send_json_error([
-                'message' => $e->getMessage(),
-            ]);
-
-        }
-    }
-
-
-
-    public function testProvider(): void
-    {
-        check_ajax_referer('pn_ai_agent');
-
-        $this->checkPermission();
-
-
-        try {
-
-
-            $provider = ProviderFactory::make(
-                sanitize_text_field(
-                    wp_unslash($_POST['provider'] ?? '')
-                )
-            );
-
-            wp_send_json(
-                $provider->testConnection()
-            );
-
-
-        } catch (\Throwable $e) {
-
-
-            error_log('[PN AI Agent] ' . $e->getMessage());
-
-
-            wp_send_json_error([
-                'message' => $e->getMessage(),
-            ]);
-
-        }
-
-    }
-
-
-
-    private function checkPermission(): void
-    {
-        if (!current_user_can('manage_options')) {
-
-            wp_send_json_error([
-                'message' => __('Permission denied.', 'pn-ai-agent'),
-            ], 403);
-
-        }
-    }
-
-
-
-    private function allowedProvider(string $provider): string
-    {
-        return in_array(
-            $provider,
-            ProviderFactory::ALLOWED_PROVIDERS,
-            true
-        )
-            ? $provider
-            : 'openai';
-    }
-
-
-
-    public function saveLicense(): void
-    {
-        check_ajax_referer('pn_ai_agent');
-
-        $this->checkPermission();
-
-
-        $license = sanitize_text_field(
-            wp_unslash($_POST['license'] ?? '')
-        );
-
-
-        update_option(
-            'pn_ai_license_key',
-            $license
-        );
-
-
-        wp_send_json_success([
-            'message' => __('License saved.', 'pn-ai-agent'),
-        ]);
-    }
-
+		wp_send_json_success(
+			array(
+				'message' => __( 'License saved.', 'pn-ai-agent' ),
+			)
+		);
+	}
 }

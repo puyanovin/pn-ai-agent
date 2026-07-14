@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PNAIAgent\Admin;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-(new Router())->render();
+( new Router() )->render();

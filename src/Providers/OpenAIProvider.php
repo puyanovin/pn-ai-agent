@@ -4,188 +4,178 @@ declare(strict_types=1);
 
 namespace PNAIAgent\Providers;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-final class OpenAIProvider extends HttpProvider
-{
-    protected string $provider = 'openai';
+final class OpenAIProvider extends HttpProvider {
 
-    public function testConnection(): array
-    {
+	protected string $provider = 'openai';
 
-        $config = $this->config();
+	public function testConnection(): array {
 
-        $apiKey = $config['api_key'];
-        $model  = $config['model'];
-        $apiUrl = $config['api_url'];
+		$config = $this->config();
 
-        if (empty($apiKey)) {
-            return $this->error(
-                __('API Key is empty.', 'pn-ai-agent')
-            );
-        }
+		$apiKey = $config['api_key'];
+		$model  = $config['model'];
+		$apiUrl = $config['api_url'];
 
-        $response = wp_remote_post(
-            trailingslashit($apiUrl) . 'responses',
-            [
-                'timeout' => 30,
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $apiKey,
-                    'Content-Type'  => 'application/json',
-                ],
-                'body' => wp_json_encode([
-                    'model' => $model,
-                    'input' => 'Reply with only: OK',
-                ]),
-            ]
-        );
+		if ( empty( $apiKey ) ) {
+			return $this->error(
+				__( 'API Key is empty.', 'pn-ai-agent' )
+			);
+		}
 
-        if (is_wp_error($response)) {
-            return $this->wpError($response);
-        }
+		$response = wp_remote_post(
+			trailingslashit( $apiUrl ) . 'responses',
+			array(
+				'timeout' => 30,
+				'headers' => array(
+					'Authorization' => 'Bearer ' . $apiKey,
+					'Content-Type'  => 'application/json',
+				),
+				'body'    => wp_json_encode(
+					array(
+						'model' => $model,
+						'input' => 'Reply with only: OK',
+					)
+				),
+			)
+		);
 
-        $error = $this->responseError($response);
+		if ( is_wp_error( $response ) ) {
+			return $this->wpError( $response );
+		}
 
-        if ($error !== null) {
-            return $error;
-        }
+		$error = $this->responseError( $response );
 
-        return $this->success([
-            'message' => __('Connection successful.', 'pn-ai-agent'),
-        ]);
+		if ( $error !== null ) {
+			return $error;
+		}
 
-    }
+		return $this->success(
+			array(
+				'message' => __( 'Connection successful.', 'pn-ai-agent' ),
+			)
+		);
+	}
 
-    public function getModels(): array
-    {
-        $config = $this->config();
+	public function getModels(): array {
+		$config = $this->config();
 
-        $apiKey = $config['api_key'];
-        $apiUrl = $config['api_url'];
+		$apiKey = $config['api_key'];
+		$apiUrl = $config['api_url'];
 
-        if ($apiKey === '') {
-            throw new \Exception(
-                __('API Key is empty.', 'pn-ai-agent')
-            );
-        }
+		if ( $apiKey === '' ) {
+			return $this->error(
+				__( 'API Key is empty.', 'pn-ai-agent' )
+			);
+		}
 
-        $response = wp_remote_get(
-            trailingslashit($apiUrl) . 'models',
-            [
-                'timeout' => 30,
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $apiKey,
-                ],
-            ]
-        );
+		$response = wp_remote_get(
+			trailingslashit( $apiUrl ) . 'models',
+			array(
+				'timeout' => 30,
+				'headers' => array(
+					'Authorization' => 'Bearer ' . $apiKey,
+				),
+			)
+		);
 
+		if ( is_wp_error( $response ) ) {
+			return $this->wpError( $response );
+		}
 
-        if (is_wp_error($response)) {
-            throw new \Exception(
-                $response->get_error_message()
-            );
-        }
+		$error = $this->responseError( $response );
 
+		if ( $error !== null ) {
+			return $error;
+		}
 
-        $error = $this->responseError($response);
+		$data = $this->decode( $response );
 
-        if ($error !== null) {
-            throw new \Exception(
-                $error['data']['message'] ?? 'OpenAI error'
-            );
-        }
+		return $this->success(
+			array(
+				'models' => $data['data'] ?? array(),
+			)
+		);
+	}
 
+	public function chat( string $prompt ): array {
 
-        $data = $this->decode($response);
-        error_log('[PN AI DEBUG] OpenAI Response: ' . print_r($data, true));
+		if ( trim( $prompt ) === '' ) {
 
+			return $this->error(
+				__( 'Prompt is empty.', 'pn-ai-agent' )
+			);
+		}
 
-        return $data['data'] ?? [];
-    }
+		$config = $this->config();
 
-    public function chat(string $prompt): array
-    {
+		$apiKey = $config['api_key'];
+		$model  = $config['model'];
+		$apiUrl = $config['api_url'];
 
-        if (trim($prompt) === '') {
-            
-            return $this->error(
-                __('Prompt is empty.', 'pn-ai-agent')
-            );
-        }
-        
-        $config = $this->config();
+		if ( $apiKey === '' ) {
+			return $this->error(
+				__( 'API Key is empty.', 'pn-ai-agent' )
+			);
+		}
 
-        $apiKey = $config['api_key'];
-        $model  = $config['model'];
-        $apiUrl = $config['api_url'];
+		$response = wp_remote_post(
+			trailingslashit( $apiUrl ) . 'chat/completions',
+			array(
+				'headers' => array(
+					'Authorization' => 'Bearer ' . $apiKey,
+					'Content-Type'  => 'application/json',
+				),
+				'body'    => wp_json_encode(
+					array(
+						'model'    => $model,
+						'messages' => array(
+							array(
+								'role'    => 'user',
+								'content' => $prompt,
+							),
+						),
+					)
+				),
+				'timeout' => 60,
+			)
+		);
 
-        if ($apiKey === '') {
-            return $this->error(
-                __('API Key is empty.', 'pn-ai-agent')
-            );
-        }
+		if ( is_wp_error( $response ) ) {
+			return $this->wpError( $response );
+		}
 
-        $response = wp_remote_post(
-            trailingslashit($apiUrl) . 'chat/completions',
-            [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $apiKey,
-                    'Content-Type'  => 'application/json',
-                ],
-                'body' => wp_json_encode([
-                    'model' => $model,
-                    'messages' => [
-                        [
-                            'role' => 'user',
-                            'content' => $prompt,
-                        ],
-                    ],
-                ]),
-                'timeout' => 60,
-            ]
-        );
+		$error = $this->responseError( $response );
 
-        if (is_wp_error($response)) {
-            return $this->wpError($response);
-        }
-        
-        $error = $this->responseError($response);
+		if ( $error !== null ) {
+			return $error;
+		}
 
-        if ($error !== null) {
-            return $error;
-        }
+		$data = $this->decode( $response );
 
-        $data = $this->decode($response);
+		if ( isset( $data['error'] ) ) {
+			return $this->error(
+				$data['error']['message']
+				?? __( 'Unknown provider error.', 'pn-ai-agent' )
+			);
+		}
 
-        if (isset($data['error'])) {
-            return $this->error(
-                $data['error']['message']
-                ?? __('Unknown provider error.', 'pn-ai-agent')
-            );
-        }
+		$answer = $data['choices'][0]['message']['content'] ?? '';
 
-        $answer = $data['choices'][0]['message']['content'] ?? '';
+		if ( $answer === '' ) {
+			return $this->error(
+				__( 'Empty response from provider.', 'pn-ai-agent' )
+			);
+		}
 
-        error_log(print_r($answer, true));
+		return $this->success(
+			array(
+				'message' => $answer,
+			)
+		);
 
-        if ($answer === '') {
-            return $this->error(
-                __('Empty response from provider.', 'pn-ai-agent')
-            );
-        }
-
-        error_log('ANSWER = ' . $answer);
-
-        return $this->success([
-            'message' => $answer,
-        ]);
-
-        error_log(print_r($result, true));
-
-        return $result;
-
-    }
-
+	}
 }

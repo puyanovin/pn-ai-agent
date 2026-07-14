@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 
 $currentProvider = get_option(
-    'pn_ai_provider',
-    'openai'
+	'pn_ai_provider',
+	'openai'
 );
 
 
 $currentModel = get_option(
-    'pn_ai_' . $currentProvider . '_model',
-    __('Not configured', 'pn-ai-agent')
+	'pn_ai_' . $currentProvider . '_model',
+	__( 'Not configured', 'pn-ai-agent' )
 );
 
 ?>
@@ -23,115 +23,131 @@ $currentModel = get_option(
 <div class="pn-chat">
 
 
-    <div class="pn-chat-header">
+	<div class="pn-chat-header">
 
-        <h2>
-            <?php esc_html_e(
-                'AI Playground',
-                'pn-ai-agent'
-            ); ?>
-        </h2>
-
-
-        <p class="description">
-
-            <?php esc_html_e(
-                'Test your configured AI provider and interact with your AI assistant.',
-                'pn-ai-agent'
-            ); ?>
-
-        </p>
-
-    </div>
+		<h2>
+			<?php
+			esc_html_e(
+				'AI Playground',
+				'pn-ai-agent'
+			);
+			?>
+		</h2>
 
 
-    <div class="pn-chat-info">
+		<p class="description">
 
-        <span>
-            <?php esc_html_e(
-                'Provider:',
-                'pn-ai-agent'
-            ); ?>
+			<?php
+			esc_html_e(
+				'Test your configured AI provider and interact with your AI assistant.',
+				'pn-ai-agent'
+			);
+			?>
 
-            <strong>
-                <?php echo esc_html($currentProvider); ?>
-            </strong>
+		</p>
 
-        </span>
-
-
-        <span>
-            <?php esc_html_e(
-                'Model:',
-                'pn-ai-agent'
-            ); ?>
-
-            <strong>
-                <?php echo esc_html($currentModel); ?>
-            </strong>
-
-        </span>
-
-    </div>
+	</div>
 
 
+	<div class="pn-chat-info">
 
-    <div
-        id="pn-chat-window"
-        class="pn-chat-window">
-    </div>
+		<span>
+			<?php
+			esc_html_e(
+				'Provider:',
+				'pn-ai-agent'
+			);
+			?>
+
+			<strong>
+				<?php echo esc_html( $currentProvider ); ?>
+			</strong>
+
+		</span>
 
 
+		<span>
+			<?php
+			esc_html_e(
+				'Model:',
+				'pn-ai-agent'
+			);
+			?>
 
-    <div class="pn-chat-input">
+			<strong>
+				<?php echo esc_html( $currentModel ); ?>
+			</strong>
 
+		</span>
 
-        <textarea
-            id="pn-chat-message"
-            rows="2"
-            placeholder="<?php echo esc_attr__(
-                'Type your message here...',
-                'pn-ai-agent'
-            ); ?>"></textarea>
+	</div>
 
 
 
-        <div class="pn-chat-buttons">
-
-
-            <button
-                id="pn-chat-send"
-                class="button button-primary">
-
-                💬
-
-                <?php esc_html_e(
-                    'Send',
-                    'pn-ai-agent'
-                ); ?>
-
-            </button>
+	<div
+		id="pn-chat-window"
+		class="pn-chat-window">
+	</div>
 
 
 
-            <button
-                id="pn-chat-clear"
-                class="button">
-
-                🗑
-
-                <?php esc_html_e(
-                    'Clear',
-                    'pn-ai-agent'
-                ); ?>
-
-            </button>
+	<div class="pn-chat-input">
 
 
-        </div>
+		<textarea
+			id="pn-chat-message"
+			rows="2"
+			placeholder="
+			<?php
+			echo esc_attr__(
+				'Type your message here...',
+				'pn-ai-agent'
+			);
+			?>
+			"></textarea>
 
 
-    </div>
+
+		<div class="pn-chat-buttons">
+
+
+			<button
+				id="pn-chat-send"
+				class="button button-primary">
+
+				💬
+
+				<?php
+				esc_html_e(
+					'Send',
+					'pn-ai-agent'
+				);
+				?>
+
+			</button>
+
+
+
+			<button
+				id="pn-chat-clear"
+				class="button">
+
+				🗑
+
+				<?php
+				esc_html_e(
+					'Clear',
+					'pn-ai-agent'
+				);
+				?>
+
+			</button>
+
+
+		</div>
+
+
+	</div>
 
 
 </div>

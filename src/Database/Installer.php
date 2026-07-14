@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace PNAIAgent\Database;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-final class Installer
-{
-    public static function install(): void
-    {
-        global $wpdb;
+final class Installer {
 
-        $table = $wpdb->prefix . 'pn_ai_chat_history';
+	public static function install(): void {
+		global $wpdb;
 
-        $charset = $wpdb->get_charset_collate();
+		$table = $wpdb->prefix . 'pn_ai_chat_history';
 
-        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		$charset = $wpdb->get_charset_collate();
 
-        $sql = "
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+		$sql = "
         CREATE TABLE {$table} (
             id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
             role VARCHAR(20) NOT NULL,
@@ -31,8 +30,8 @@ final class Installer
         ) ENGINE=InnoDB {$charset};
         ";
 
-        dbDelta($sql);
+		dbDelta( $sql );
 
-        update_option('pn_ai_agent_db_version', '1.0.0');
-    }
+		update_option( 'pn_ai_agent_db_version', '1.0.0' );
+	}
 }

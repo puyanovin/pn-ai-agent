@@ -1,46 +1,47 @@
 <?php
+/**
+ * Description of this file.
+ *
+ * @package PNAIAgent
+ */
 
 declare(strict_types=1);
 
 namespace PNAIAgent\Blocks;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-final class ChatBlock
-{
-    public function register(): void
-    {
-        add_action(
-            'init',
-            [$this, 'init']
-        );
-    }
+final class ChatBlock {
 
-    public function init(): void
-    {
-        $path = PN_AI_AGENT_PATH . 'src/Blocks';
+	public function register(): void {
+		add_action(
+			'init',
+			array( $this, 'init' )
+		);
+	}
 
-        if (!file_exists($path . '/block.json')) {
-            return;
-        }
+	public function init(): void {
+		$path = PN_AI_AGENT_PATH . 'src/Blocks';
 
-        wp_register_script(
-            'pn-ai-agent-block',
-            PN_AI_AGENT_URL . 'src/Blocks/editor.js',
-            [
-                'wp-blocks',
-                'wp-element',
-                'wp-i18n',
-                'wp-block-editor'
-            ],
-            PN_AI_AGENT_VERSION,
-            true
-        );
+		if ( ! file_exists( $path . '/block.json' ) ) {
+			return;
+		}
 
-        register_block_type($path);
-    }
+		wp_register_script(
+			'pn-ai-agent-block',
+			PN_AI_AGENT_URL . 'src/Blocks/editor.js',
+			array(
+				'wp-blocks',
+				'wp-element',
+				'wp-i18n',
+				'wp-block-editor',
+			),
+			PN_AI_AGENT_VERSION,
+			true
+		);
+
+		register_block_type( $path );
+	}
 }
-
-

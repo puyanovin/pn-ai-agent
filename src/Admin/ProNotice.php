@@ -4,72 +4,77 @@ declare(strict_types=1);
 
 namespace PNAIAgent\Admin;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-final class ProNotice
-{
-    public static function render(): void
-    {
-        ?>
-        <div class="notice notice-info inline pn-pro-notice">
+final class ProNotice {
 
-            <h2>
-                🚀
-                <?php esc_html_e(
-                    'Available in PN AI Agent Pro',
-                    'pn-ai-agent'
-                ); ?>
-            </h2>
+	public static function render(): void {
+		?>
+		<div class="notice notice-info inline pn-pro-notice">
 
-            <p>
+			<h2>
+				🚀
+				<?php
+				esc_html_e(
+					'Available in PN AI Agent Pro',
+					'pn-ai-agent'
+				);
+				?>
+			</h2>
 
-                <?php esc_html_e(
-                    'This feature is available in the Pro version.',
-                    'pn-ai-agent'
-                ); ?>
+			<p>
 
-            </p>
+				<?php
+				esc_html_e(
+					'This feature is available in the Pro version.',
+					'pn-ai-agent'
+				);
+				?>
 
-            <ul>
+			</p>
 
-                <li>✓ AI Agents</li>
+			<ul>
 
-                <li>✓ MCP Servers</li>
+				<li>✓ AI Agents</li>
 
-                <li>✓ Knowledge Base</li>
+				<li>✓ MCP Servers</li>
 
-                <li>✓ Image Generation</li>
+				<li>✓ Knowledge Base</li>
 
-                <li>✓ Memory</li>
+				<li>✓ Image Generation</li>
 
-                <li>✓ Premium Providers</li>
+				<li>✓ Memory</li>
 
-                <li>✓ Usage Statistics</li>
+				<li>✓ Premium Providers</li>
 
-                <li>✓ Priority Support</li>
+				<li>✓ Usage Statistics</li>
 
-            </ul>
+				<li>✓ Priority Support</li>
 
-            <p>
+			</ul>
 
-                <a
-                    class="button button-primary"
-                    href="https://plugins.puyanovin.ir"
-                    target="_blank">
+			<p>
 
-                    <?php esc_html_e(
-                        'Upgrade to Pro',
-                        'pn-ai-agent'
-                    ); ?>
+				<a
+					class="button button-primary"
+					href="https://plugins.puyanovin.ir"
+					target="_blank">
 
-                </a>
+					<?php
+					esc_html_e(
+						'Upgrade to Pro',
+						'pn-ai-agent'
+					);
+					?>
 
-            </p>
+				</a>
 
-        </div>
+			</p>
 
-        <?php
-    }
+		</div>
+
+		<?php
+	}
 }

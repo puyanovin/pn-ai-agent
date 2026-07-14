@@ -4,113 +4,109 @@ declare(strict_types=1);
 
 namespace PNAIAgent\Providers;
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-final class ProviderFactory
-{
-    public const ALLOWED_PROVIDERS = [
-        'openai',
-        'gemini',
-        'anthropic',
-        'openrouter',
-        'ollama',
-    ];
+final class ProviderFactory {
 
-    public const FREE_PROVIDERS = [
-        'openai',
-        'gemini',
-        'ollama',
-    ];
+	public const ALLOWED_PROVIDERS = array(
+		'openai',
+		'gemini',
+		'anthropic',
+		'openrouter',
+		'ollama',
+	);
 
-    public static function make(?string $provider = null): ProviderInterface
-    {
-        $provider ??= sanitize_key(
-            get_option('pn_ai_provider', 'openai')
-        );
+	public const FREE_PROVIDERS = array(
+		'openai',
+		'gemini',
+		'ollama',
+	);
 
-        if (!in_array(
-            $provider,
-            self::ALLOWED_PROVIDERS,
-            true
-        )) {
-            $provider = 'openai';
-        }
+	public static function make( ?string $provider = null ): ProviderInterface {
+		$provider ??= sanitize_key(
+			get_option( 'pn_ai_provider', 'openai' )
+		);
 
-        if (
-            !in_array(
-                $provider,
-                self::FREE_PROVIDERS,
-                true
-            )
-        ) {
-            return new LockedProvider($provider);
-        }
+		if ( ! in_array(
+			$provider,
+			self::ALLOWED_PROVIDERS,
+			true
+		) ) {
+			$provider = 'openai';
+		}
 
-        return match ($provider) {
+		if (
+			! in_array(
+				$provider,
+				self::FREE_PROVIDERS,
+				true
+			)
+		) {
+			return new LockedProvider( $provider );
+		}
 
-            'openai' => new OpenAIProvider(),
+		return match ( $provider ) {
 
-            'gemini' => new GeminiProvider(),
+			'openai' => new OpenAIProvider(),
 
-            'ollama' => new OllamaProvider(),
+			'gemini' => new GeminiProvider(),
 
-            default => new LockedProvider($provider),
+			'ollama' => new OllamaProvider(),
 
-        };
-    }
+			default => new LockedProvider( $provider ),
 
-    public static function defaultUrl(string $provider): string
-    {
-        return match ($provider) {
+		};
+	}
 
-            'openai'
-                => 'https://api.openai.com/v1',
+	public static function defaultUrl( string $provider ): string {
+		return match ( $provider ) {
 
-            'gemini'
-                => 'https://generativelanguage.googleapis.com/v1beta',
+			'openai'
+				=> 'https://api.openai.com/v1',
 
-            'anthropic'
-                => 'https://api.anthropic.com/v1',
+			'gemini'
+				=> 'https://generativelanguage.googleapis.com/v1beta',
 
-            'openrouter'
-                => 'https://openrouter.ai/api/v1',
+			'anthropic'
+				=> 'https://api.anthropic.com/v1',
 
-            'ollama'
-                => 'http://localhost:11434/api',
+			'openrouter'
+				=> 'https://openrouter.ai/api/v1',
 
-            default
-                => '',
-        };
-    }
+			'ollama'
+				=> 'http://localhost:11434/api',
 
-    public static function defaultModel(string $provider): string
-    {
-        return match ($provider) {
+			default
+				=> '',
+		};
+	}
 
-            'openai'
-                => 'gpt-5-mini',
+	public static function defaultModel( string $provider ): string {
+		return match ( $provider ) {
 
-            'gemini'
-                => 'gemini-2.5-flash',
+			'openai'
+				=> 'gpt-5-mini',
 
-            'anthropic'
-                => 'claude-sonnet-4-0',
+			'gemini'
+				=> 'gemini-2.5-flash',
 
-            'openrouter'
-                => 'openai/gpt-4.1-mini',
+			'anthropic'
+				=> 'claude-sonnet-4-0',
 
-            'ollama'
-                => 'llama3.2',
+			'openrouter'
+				=> 'openai/gpt-4.1-mini',
 
-            default
-                => '',
-        };
-    }
+			'ollama'
+				=> 'llama3.2',
 
-    public static function isFree(string $provider): bool
-    {
-        return in_array($provider, self::FREE_PROVIDERS, true);
-    }
+			default
+				=> '',
+		};
+	}
+
+	public static function isFree( string $provider ): bool {
+		return in_array( $provider, self::FREE_PROVIDERS, true );
+	}
 }

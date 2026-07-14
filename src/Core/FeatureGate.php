@@ -1,13 +1,10 @@
 <?php
 
-final class FeatureGate
-{
+final class FeatureGate {
 
-    public static function pro(string $feature): bool
-    {
 
-        return false;
+	public static function pro( string $feature ): bool {
 
-    }
-
+		return false;
+	}
 }

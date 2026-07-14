@@ -14,3 +14,7 @@ composer.lock
 npm-debug.log
 
 .env
+
+release/
+
+/*.zip

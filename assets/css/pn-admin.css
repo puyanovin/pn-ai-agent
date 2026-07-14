@@ -1,357 +1,357 @@
 /* ==========================================
-   PN AI Agent - Admin Styles
-   ========================================== */
+	PN AI Agent - Admin Styles
+	========================================== */
 
 
 /* ==========================================
-   Test Section
-   ========================================== */
+	Test Section
+	========================================== */
 
 .pn-test-section{
-    margin:20px 0;
-    overflow:hidden;
-    background:#fff;
-    border:1px solid #ccd0d4;
-    border-radius:8px;
-    box-shadow:0 1px 1px rgba(0,0,0,.04);
+	margin:20px 0;
+	overflow:hidden;
+	background:#fff;
+	border:1px solid #ccd0d4;
+	border-radius:8px;
+	box-shadow:0 1px 1px rgba(0,0,0,.04);
 }
 
 .pn-test-header{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:15px 20px;
-    background:#f8f9fa;
-    border-bottom:1px solid #e2e4e7;
+	display:flex;
+	align-items:center;
+	gap:12px;
+	padding:15px 20px;
+	background:#f8f9fa;
+	border-bottom:1px solid #e2e4e7;
 }
 
 .pn-test-icon{
-    font-size:24px;
+	font-size:24px;
 }
 
 .pn-test-header h3{
-    flex:1;
-    margin:0;
-    font-size:16px;
-    font-weight:600;
+	flex:1;
+	margin:0;
+	font-size:16px;
+	font-weight:600;
 }
 
 .pn-test-status{
-    padding:4px 12px;
-    font-size:12px;
-    font-weight:500;
-    border-radius:20px;
+	padding:4px 12px;
+	font-size:12px;
+	font-weight:500;
+	border-radius:20px;
 }
 
 .status-ok{
-    color:#0f5132;
-    background:#d1e7dd;
+	color:#0f5132;
+	background:#d1e7dd;
 }
 
 .status-warning{
-    color:#856404;
-    background:#fff3cd;
+	color:#856404;
+	background:#fff3cd;
 }
 
 .pn-test-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:20px;
-    padding:20px;
+	display:grid;
+	grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+	gap:20px;
+	padding:20px;
 }
 
 .pn-test-card{
-    overflow:hidden;
-    background:#fff;
-    border:1px solid #e2e4e7;
-    border-radius:6px;
+	overflow:hidden;
+	background:#fff;
+	border:1px solid #e2e4e7;
+	border-radius:6px;
 }
 
 .pn-test-card-title{
-    padding:10px 15px;
-    font-weight:600;
-    background:#f8f9fa;
-    border-bottom:1px solid #e2e4e7;
+	padding:10px 15px;
+	font-weight:600;
+	background:#f8f9fa;
+	border-bottom:1px solid #e2e4e7;
 }
 
 .pn-test-card-content{
-    padding:15px;
+	padding:15px;
 }
 
 .pn-test-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:6px 0;
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
+	padding:6px 0;
 }
 
 .pn-test-label{
-    font-weight:500;
+	font-weight:500;
 }
 
 .pn-test-badge{
-    padding:2px 8px;
-    font-size:12px;
-    border-radius:12px;
+	padding:2px 8px;
+	font-size:12px;
+	border-radius:12px;
 }
 
 .pn-test-badge.success{
-    color:#0f5132;
-    background:#d1e7dd;
+	color:#0f5132;
+	background:#d1e7dd;
 }
 
 .pn-test-badge.error{
-    color:#721c24;
-    background:#f8d7da;
+	color:#721c24;
+	background:#f8d7da;
 }
 
 .pn-test-table{
-    width:100%;
-    border-collapse:collapse;
+	width:100%;
+	border-collapse:collapse;
 }
 
 .pn-test-table th,
 .pn-test-table td{
-    padding:6px 8px;
-    text-align:center;
-    border-bottom:1px solid #e2e4e7;
+	padding:6px 8px;
+	text-align:center;
+	border-bottom:1px solid #e2e4e7;
 }
 
 .pn-test-table th{
-    font-weight:600;
-    background:#f8f9fa;
+	font-weight:600;
+	background:#f8f9fa;
 }
 
 .pn-test-empty{
-    padding:20px;
-    text-align:center;
-    color:#6c757d;
+	padding:20px;
+	text-align:center;
+	color:#6c757d;
 }
 
 .pn-test-empty.success{
-    color:#0f5132;
-    background:#d1e7dd;
-    border-radius:4px;
+	color:#0f5132;
+	background:#d1e7dd;
+	border-radius:4px;
 }
 
 .pn-test-list{
-    margin:0;
-    padding-left:20px;
+	margin:0;
+	padding-left:20px;
 }
 
 .pn-test-list li{
-    margin:5px 0;
-    color:#856404;
+	margin:5px 0;
+	color:#856404;
 }
 
 
 /* ==========================================
-   Product Mapping
-   ========================================== */
+	Product Mapping
+	========================================== */
 
 .map-row{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:12px;
-    padding:10px;
-    background:#f5f5f5;
-    border:1px solid #ddd;
-    border-radius:4px;
+	display:flex;
+	align-items:center;
+	gap:10px;
+	margin-bottom:12px;
+	padding:10px;
+	background:#f5f5f5;
+	border:1px solid #ddd;
+	border-radius:4px;
 }
 
 .map-row .product-id-input,
 .map-row .level-id-input{
-    width:180px;
-    padding:6px 10px;
+	width:180px;
+	padding:6px 10px;
 }
 
 .map-row .arrow{
-    font-size:18px;
-    color:#666;
+	font-size:18px;
+	color:#666;
 }
 
 .remove-row{
-    margin-left:auto;
+	margin-left:auto;
 }
 
 
 /* ==========================================
-   Appearance Settings
-   ========================================== */
+	Appearance Settings
+	========================================== */
 
 .pn-appearance-settings .settings-section{
-    margin-bottom:20px;
-    padding:20px;
-    background:#fff;
-    border:1px solid #ccd0d4;
-    box-shadow:0 1px 1px rgba(0,0,0,.04);
+	margin-bottom:20px;
+	padding:20px;
+	background:#fff;
+	border:1px solid #ccd0d4;
+	box-shadow:0 1px 1px rgba(0,0,0,.04);
 }
 
 .pn-appearance-settings .settings-section h3{
-    margin-top:0;
-    padding-bottom:10px;
-    border-bottom:1px solid #eee;
+	margin-top:0;
+	padding-bottom:10px;
+	border-bottom:1px solid #eee;
 }
 
 .pn-appearance-settings .notice-info{
-    background:#f0f8ff;
-    border-left-color:#00a0d2;
+	background:#f0f8ff;
+	border-left-color:#00a0d2;
 }
 
 .pn-appearance-settings code{
-    padding:2px 6px;
-    background:#f1f1f1;
-    border-radius:3px;
+	padding:2px 6px;
+	background:#f1f1f1;
+	border-radius:3px;
 }
 
 .separator-preview{
-    padding:10px;
-    font-size:16px;
-    background:#f5f5f5;
-    border-radius:4px;
+	padding:10px;
+	font-size:16px;
+	background:#f5f5f5;
+	border-radius:4px;
 }
 
 .preview-sep{
-    display:inline-block;
-    margin:0 8px;
-    font-weight:bold;
-    color:#007cba;
+	display:inline-block;
+	margin:0 8px;
+	font-weight:bold;
+	color:#007cba;
 }
 
 #icon-instructions{
-    margin-top:15px;
-    padding:12px;
-    background:#f8f9fa;
-    border-left:4px solid #007cba;
+	margin-top:15px;
+	padding:12px;
+	background:#f8f9fa;
+	border-left:4px solid #007cba;
 }
 
 #icon-instructions ol{
-    margin:5px 0 0 20px;
+	margin:5px 0 0 20px;
 }
 
 #icon-instructions li{
-    margin:5px 0;
+	margin:5px 0;
 }
 
 #icon-example code{
-    display:inline-block;
-    margin:3px 0;
+	display:inline-block;
+	margin:3px 0;
 }
 
 
 /* ==========================================
-   Chat
-   ========================================== */
+	Chat
+	========================================== */
 
 .pn-chat{
-    max-width:900px;
+	max-width:900px;
 }
 
 .pn-chat-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:15px;
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
+	margin-bottom:15px;
 }
 
 .pn-chat-header strong{
-    font-size:16px;
+	font-size:16px;
 }
 
 .pn-chat-header .description{
-    color:#666;
+	color:#666;
 }
 
 .pn-chat-window{
-    height:450px;
-    overflow-y:auto;
-    scroll-behavior:smooth;
-    padding:15px;
-    margin-bottom:15px;
-    background:#fff;
-    border:1px solid #ccd0d4;
-    border-radius:8px;
+	height:450px;
+	overflow-y:auto;
+	scroll-behavior:smooth;
+	padding:15px;
+	margin-bottom:15px;
+	background:#fff;
+	border:1px solid #ccd0d4;
+	border-radius:8px;
 }
 
 .pn-user,
 .pn-ai{
-    margin:10px 0;
+	margin:10px 0;
 }
 
 .pn-user{
-    text-align:right;
+	text-align:right;
 }
 
 .pn-ai{
-    text-align:left;
+	text-align:left;
 }
 
 .pn-user span,
 .pn-ai span{
-    display:inline-block;
-    max-width:80%;
-    padding:10px 15px;
-    line-height:1.6;
-    white-space:pre-wrap;
-    word-break:break-word;
-    border-radius:12px;
+	display:inline-block;
+	max-width:80%;
+	padding:10px 15px;
+	line-height:1.6;
+	white-space:pre-wrap;
+	word-break:break-word;
+	border-radius:12px;
 }
 
 .pn-user span{
-    color:#fff;
-    background:#2271b1;
+	color:#fff;
+	background:#2271b1;
 }
 
 .pn-ai span{
-    background:#f1f1f1;
+	background:#f1f1f1;
 }
 
 .pn-thinking span{
-    font-style:italic;
-    color:#666;
+	font-style:italic;
+	color:#666;
 }
 
 .pn-chat-input{
-    display:flex;
-    gap:12px;
-    align-items:flex-end;
+	display:flex;
+	gap:12px;
+	align-items:flex-end;
 }
 
 #pn-chat-message{
-    flex:1;
-    min-height:70px;
-    padding:10px;
-    resize:vertical;
+	flex:1;
+	min-height:70px;
+	padding:10px;
+	resize:vertical;
 }
 
 .pn-chat-buttons{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
+	display:flex;
+	flex-direction:column;
+	gap:8px;
 }
 
 .pn-chat-buttons .button{
-    min-width:120px;
+	min-width:120px;
 }
 
 
 /* ==========================================
-   Pro Notice
-   ========================================== */
+	Pro Notice
+	========================================== */
 
 .pn-pro-notice{
-    margin-top:20px;
-    padding:20px;
-    background:#fff;
-    border:1px solid #ccd0d4;
-    border-left:4px solid #2271b1;
+	margin-top:20px;
+	padding:20px;
+	background:#fff;
+	border:1px solid #ccd0d4;
+	border-left:4px solid #2271b1;
 }
 
 .pn-pro-notice ul{
-    margin:15px 0 20px 20px;
+	margin:15px 0 20px 20px;
 }
 
 .pn-pro-notice li{
-    margin:6px 0;
+	margin:6px 0;
 }
