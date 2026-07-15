@@ -31,7 +31,7 @@ cp readme.txt "$BUILD_DIR/"
 cp -r assets "$BUILD_DIR/"
 cp -r languages "$BUILD_DIR/"
 cp -r src "$BUILD_DIR/"
-cp -r vendor "$BUILD_DIR/"
+cp -r vendor-run "$BUILD_DIR/vendor"
 
 # Remove previous zip
 rm -f "${RELEASE_DIR}/${ZIP_NAME}"

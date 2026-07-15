@@ -3,6 +3,7 @@
     "description": "Open-source AI Assistant plugin for WordPress.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
+
     "keywords": [
         "wordpress",
         "ai",
@@ -11,32 +12,37 @@
         "gemini",
         "ollama"
     ],
+
     "homepage": "https://plugins.puyanovin.ir/pn-ai-agent",
+
     "authors": [
         {
             "name": "PN Suite",
             "homepage": "https://plugins.puyanovin.ir"
         }
     ],
+
     "autoload": {
         "psr-4": {
             "PNAIAgent\\": "src/"
         }
     },
+
     "minimum-stability": "stable",
     "prefer-stable": true,
+
+    "require": {},
+
     "require-dev": {
+        "squizlabs/php_codesniffer": "^3.13",
         "wp-coding-standards/wpcs": "^3.3",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.2"
     },
+
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
-        }
-    },
-    "require-dev": {
-       "squizlabs/php_codesniffer": "^3.13",
-       "wp-coding-standards/wpcs": "^3.3",
-       "dealerdirect/phpcodesniffer-composer-installer": "^1.2"
-   }
+        },
+        "sort-packages": true
+    }
 }
